@@ -1,0 +1,17 @@
+################ MÚSICOS
+
+### BUSCAR TODOS OS MÚSICOS
+
+GET http://localhost:3000/musicos/all
+
+### CADASTRAR NOVO USUARIO
+
+POST http://localhost:3000/musicos
+Content-Type: application/json
+
+{
+  "id": 1,
+  "fullName": "Dinah Martins",
+  "email": "funcionario@gmail.com",
+  "instruments": ["guitar", "violin"]
+}
