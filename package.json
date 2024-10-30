@@ -1,0 +1,16 @@
+{
+  "name": "arthwind",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "yarn install && yarn dbs:dev && docker-compose --env-file ./env/dev.env -p tizza up -d --build",
+    "prod:arthwind": "docker-compose --env-file ./env/arthwind.env -p arthwind up -d --build",
+    "dbs:dev": "docker-compose --env-file ./env/dbs-dev.env -f 'dbs-compose.yml' -p dbs-dev up -d --build",
+    "dbs:prod": "docker-compose --env-file ./env/dbs.env -f 'dbs-compose.yml' -p dbs up -d --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
