@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { MusicoInstrumento } from 'src/musico_instrumento/musico_instrumento.entity';
+import { EventoMusico } from 'src/evento_musico/evento_musico.entity';
 
 @Entity()
 export class Musico {
@@ -14,5 +15,8 @@ export class Musico {
 
   @OneToMany(() => MusicoInstrumento, (musicoInstrumento) => musicoInstrumento.musico)
   musicoInstrumentos: MusicoInstrumento[];
+
+  @OneToMany(() => EventoMusico, (evento_musico) => evento_musico.musico)
+  evento_musico: EventoMusico[];
 
 }

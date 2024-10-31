@@ -1,3 +1,4 @@
+import { EventoMusico } from 'src/evento_musico/evento_musico.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 
 @Entity()
@@ -22,5 +23,8 @@ export class Evento {
 
   @Column()
   status: string;
+
+  @OneToMany(() => EventoMusico, (evento_musico) => evento_musico.musico)
+  evento_musico: EventoMusico[];
 
 }
