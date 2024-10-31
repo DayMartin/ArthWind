@@ -7,30 +7,30 @@ import { UpdateEventosDto } from './dtos/update-eventos.dto';
 
 @Controller('eventos')
 export class EventosController {
-  constructor(private readonly instrumentosService: EventosService) {}
+  constructor(private readonly eventosService: EventosService) {}
 
   @Post()
   async create(@Body() createMusicoDto: CreateEventosDto): Promise<Evento> {
-    return this.instrumentosService.create(createMusicoDto);
+    return this.eventosService.create(createMusicoDto);
   }
 
   @Get('all')
   async findAll(): Promise<Evento[]> {
-    return this.instrumentosService.findAll();
+    return this.eventosService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Evento> {
-    return this.instrumentosService.findOne(id);
+    return this.eventosService.findOne(id);
   }
 
   @Put(':id')
   async update(@Param('id') id: number, @Body() updateMusicoDto: UpdateEventosDto): Promise<Evento> {
-    return this.instrumentosService.update(id, updateMusicoDto);
+    return this.eventosService.update(id, updateMusicoDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
-    return this.instrumentosService.remove(id);
+    return this.eventosService.remove(id);
   }
 }
