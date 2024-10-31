@@ -13,7 +13,12 @@ export class MusicoInstrumentoController {
   async addInstrumentoToMusico(@Body() createMusicoInstrumentoDto: CreateMusicoInstrumentoDto) {
     return this.musicoInstrumentoService.addInstrumentoToMusico(createMusicoInstrumentoDto);
   }
-
+  
+  @Get('all')
+  async getAllMusicoInstrumentos(): Promise<MusicoInstrumento[]> {
+    return this.musicoInstrumentoService.getAllMusicoInstrumentos();
+  }
+  
   @Get(':id')
   async getMusicoInstrumento(@Param('id') id: number): Promise<MusicoInstrumento> {
     return this.musicoInstrumentoService.getMusicoInstrumentoById(id);

@@ -42,6 +42,13 @@ export class MusicoInstrumentoService {
     return this.musicoInstrumentoRepository.save(musicoInstrumento);
   }
 
+  async getAllMusicoInstrumentos(): Promise<MusicoInstrumento[]> {
+    return this.musicoInstrumentoRepository.find({
+      relations: ['musico', 'instrumento'],
+    });
+  }
+  
+
   async getMusicoInstrumentoById(id: number): Promise<MusicoInstrumento> {
     const musicoInstrumento = await this.musicoInstrumentoRepository.findOne({
       where: { id },
