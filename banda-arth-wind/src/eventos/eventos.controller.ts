@@ -1,11 +1,11 @@
-// instrumentos.controller.ts
+// eventos.controller.ts
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { EventosService } from './eventos.service';
 import { CreateEventosDto } from './dtos/create-eventos.dto';
 import { Evento } from './evento.entity';
 import { UpdateEventosDto } from './dtos/update-eventos.dto';
 
-@Controller('instrumentos')
+@Controller('eventos')
 export class EventosController {
   constructor(private readonly instrumentosService: EventosService) {}
 
