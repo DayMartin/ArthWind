@@ -13,9 +13,9 @@ export class InstrumentosService {
     private instrumentosRepository: Repository<Instrumento>,
   ) {}
 
-  async create(createMusicoDto: CreateInstrumentoDto): Promise<Instrumento> {
-    const musico = this.instrumentosRepository.create(createMusicoDto);
-    return this.instrumentosRepository.save(musico);
+  async create(createInstrumentosDto: CreateInstrumentoDto): Promise<Instrumento> {
+    const instrumento = this.instrumentosRepository.create(createInstrumentosDto);
+    return this.instrumentosRepository.save(instrumento);
   }
 
   async findAll(): Promise<Instrumento[]> {
@@ -31,16 +31,16 @@ export class InstrumentosService {
   }
 
   async findOne(id: number): Promise<Instrumento> {
-    const musico = await this.instrumentosRepository.findOneBy({ id });
-    if (!musico) {
-      throw new NotFoundException(`musico com o id ${id} não existe`);
+    const instrumento = await this.instrumentosRepository.findOneBy({ id });
+    if (!instrumento) {
+      throw new NotFoundException(`instrumento com o id ${id} não existe`);
     }
-    return musico;
+    return instrumento;
   }
 
-  async update(id: number, updateMusicoDto: UpdateInstrumentoDto): Promise<Instrumento> {
+  async update(id: number, updateInstrumentoDto: UpdateInstrumentoDto): Promise<Instrumento> {
     await this.findOne(id);
-    await this.instrumentosRepository.update(id, updateMusicoDto);
+    await this.instrumentosRepository.update(id, updateInstrumentoDto);
     return this.findOne(id);
   }
 

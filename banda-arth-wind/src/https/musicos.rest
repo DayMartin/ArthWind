@@ -12,6 +12,5 @@ Content-Type: application/json
 {
   "id": 1,
   "fullName": "Dinah Martins",
-  "email": "funcionario@gmail.com",
-  "instruments": ["guitar", "violin"]
+  "email": "funcionario@gmail.com"
 }

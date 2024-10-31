@@ -10,8 +10,8 @@ export class InstrumentosController {
   constructor(private readonly instrumentosService: InstrumentosService) {}
 
   @Post()
-  async create(@Body() createMusicoDto: CreateInstrumentoDto): Promise<Instrumento> {
-    return this.instrumentosService.create(createMusicoDto);
+  async create(@Body() createInstrumentosDto: CreateInstrumentoDto): Promise<Instrumento> {
+    return this.instrumentosService.create(createInstrumentosDto);
   }
 
   @Get('all')
@@ -25,8 +25,8 @@ export class InstrumentosController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateMusicoDto: UpdateInstrumentoDto): Promise<Instrumento> {
-    return this.instrumentosService.update(id, updateMusicoDto);
+  async update(@Param('id') id: number, @Body() updateInstrumentosDto: UpdateInstrumentoDto): Promise<Instrumento> {
+    return this.instrumentosService.update(id, updateInstrumentosDto);
   }
 
   @Delete(':id')

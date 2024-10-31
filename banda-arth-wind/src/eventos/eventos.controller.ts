@@ -10,8 +10,8 @@ export class EventosController {
   constructor(private readonly eventosService: EventosService) {}
 
   @Post()
-  async create(@Body() createMusicoDto: CreateEventosDto): Promise<Evento> {
-    return this.eventosService.create(createMusicoDto);
+  async create(@Body() createEventoDto: CreateEventosDto): Promise<Evento> {
+    return this.eventosService.create(createEventoDto);
   }
 
   @Get('all')
@@ -25,8 +25,8 @@ export class EventosController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateMusicoDto: UpdateEventosDto): Promise<Evento> {
-    return this.eventosService.update(id, updateMusicoDto);
+  async update(@Param('id') id: number, @Body() updateEventoDto: UpdateEventosDto): Promise<Evento> {
+    return this.eventosService.update(id, updateEventoDto);
   }
 
   @Delete(':id')
