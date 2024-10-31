@@ -21,9 +21,4 @@ export class UpdateMusicoDto {
   @IsEmail()
   email?: string;
 
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  instruments?: string[];
 }

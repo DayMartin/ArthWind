@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { MusicoInstrumento } from 'src/musico_instrumento/musico_instrumento.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class Instrumento {
@@ -7,5 +8,8 @@ export class Instrumento {
 
   @Column({ unique: true })
   name: string;
+
+  @OneToMany(() => MusicoInstrumento, (musicoInstrumento) => musicoInstrumento.instrumento)
+  musicoInstrumentos: MusicoInstrumento[];
 
 }

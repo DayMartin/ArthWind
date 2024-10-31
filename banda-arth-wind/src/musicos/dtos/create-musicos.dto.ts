@@ -21,9 +21,4 @@ export class CreateMusicoDto {
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  instruments: string[];
 }
