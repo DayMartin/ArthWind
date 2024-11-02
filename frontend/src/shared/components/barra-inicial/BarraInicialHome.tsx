@@ -1,5 +1,5 @@
 import * as React from "react";
-import Link from "next/link";  // Importa o Link do Next.js
+import Link from "next/link";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 const menuItems = [
   { label: "Início", path: "/" },
-  { label: "Músicos", path: "/Musicos/musicos" },
+  { label: "Músicos", path: "dashboard/Musicos/Musicos" },
   { label: "Instrumentos", path: "/instrumentos" },
 ];
 

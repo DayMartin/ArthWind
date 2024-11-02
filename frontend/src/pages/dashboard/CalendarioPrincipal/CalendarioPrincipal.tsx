@@ -2,21 +2,13 @@ import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { Box, Button, Typography } from '@mui/material';
-import { ViewEvento } from '../../../shared/components/view_detalhe_evento/view_evento';
-import { NextEvents } from './components/NextEvento/next.evento';
+import { ViewEvento } from '@/shared/components/view_detalhe_evento/view_evento';
+import { NextEvento } from './components/NextEvento/NextEvento';
 import './CustomCalendar.module.css';
+import { Activity, CustomCalendarProps } from '@/shared/interfaces/EventoInterface';
 
-interface Activity {
-  id: string;
-  title: string;
-  date: string;
-}
 
-interface CustomCalendarProps {
-  activities: Activity[];
-}
-
-const CustomCalendar: React.FC<CustomCalendarProps> = ({ activities }) => {
+const CalenarioPrincipal: React.FC<CustomCalendarProps> = ({ activities }) => {
   const [selectedEvent, setSelectedEvent] = useState<Activity | null>(null);
 
   const events = activities.map(activity => ({
@@ -73,11 +65,11 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ activities }) => {
         </Button>
 
         <Box sx={{ flexGrow: 1 }}>
-          <NextEvents events={events} />
+          <NextEvento events={events} />
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default CustomCalendar;
+export default CalenarioPrincipal;

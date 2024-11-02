@@ -1,24 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Typography, List, ListItemText } from '@mui/material';
 import { ViewEvento } from '@/shared/components/view_detalhe_evento/view_evento';
+import { Activity, Event, NextEventsProps} from '@/shared/interfaces/EventoInterface';
 
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-}
-
-interface NextEventsProps {
-  events: Event[];
-}
-
-interface Activity {
-  id: string;
-  title: string;
-  date: string;
-}
-
-export const NextEvents: React.FC<NextEventsProps> = ({ events }) => {
+export const NextEvento: React.FC<NextEventsProps> = ({ events }) => {
   const [selectedEvent, setSelectedEvent] = useState<Activity | null>(null);
 
   const nextEvents = events.slice(0, 2);
