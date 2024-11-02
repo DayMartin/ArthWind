@@ -27,7 +27,7 @@ export const typeormModule: DataSourceOptions = {
 export default {
   demo,
   production,
-  port: 3000,
+  port: 3048,
 
   jwt: {
     secret:
