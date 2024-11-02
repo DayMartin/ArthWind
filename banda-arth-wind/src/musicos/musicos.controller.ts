@@ -1,5 +1,5 @@
 // musicos.controller.ts
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { MusicosService } from './musicos.service';
 import { CreateMusicoDto } from './dtos/create-musicos.dto';
 import { Musico } from './musico.entity';
@@ -9,14 +9,19 @@ import { UpdateMusicoDto } from './dtos/update-musicos.dto';
 export class MusicosController {
   constructor(private readonly musicosService: MusicosService) {}
 
-  @Post()
+  @Post('create')
   async create(@Body() createMusicoDto: CreateMusicoDto): Promise<Musico> {
     return this.musicosService.create(createMusicoDto);
   }
 
-  @Get('all')
-  async findAll(): Promise<Musico[]> {
-    return this.musicosService.findAll();
+  @Get("all")
+  async findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('id') id?: number,
+    @Query('nome') nome?: string,
+  ): Promise<{ rows: Musico[]; total: number }> {
+    return this.musicosService.findAll(page, limit, id, nome);
   }
 
   @Get(':id')

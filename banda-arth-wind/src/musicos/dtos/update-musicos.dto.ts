@@ -6,6 +6,8 @@ import {
   ArrayNotEmpty,
   IsEmail,
   IsOptional,
+  IsStrongPassword,
+  IsNumber,
 } from 'class-validator';
 
 export class UpdateMusicoDto {
@@ -20,5 +22,21 @@ export class UpdateMusicoDto {
   @IsOptional()
   @IsEmail()
   email?: string;
+
+  @IsOptional()
+  @IsString()
+  senha?: string;
+
+  @IsOptional()
+  @IsString()
+  type?: string;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @IsOptional()
+  @IsInt()
+  valorEvento?: number;
 
 }

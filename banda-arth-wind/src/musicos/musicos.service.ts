@@ -1,5 +1,5 @@
 // musicos.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Musico } from './musico.entity';
@@ -14,20 +14,46 @@ export class MusicosService {
   ) {}
 
   async create(createMusicoDto: CreateMusicoDto): Promise<Musico> {
+    const existingMusico = await this.musicosRepository.findOne({
+      where: { email: createMusicoDto.email },
+    });
+    if (existingMusico) {
+      throw new ConflictException('Email já cadastrado.');
+    }
     const musico = this.musicosRepository.create(createMusicoDto);
-    return this.musicosRepository.save(musico);
+    try {
+      return await this.musicosRepository.save(musico);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('Conflito de dados ao criar o músico.');
+      }
+      throw new InternalServerErrorException('Erro ao criar o músico.');
+    }
   }
 
-  async findAll(): Promise<Musico[]> {
-    const musicos = await this.musicosRepository.find();
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+    id?: number,
+    nome?: string,
+  ): Promise<{ rows: Musico[]; total: number }> {
+    const queryBuilder = this.musicosRepository.createQueryBuilder('musico');
 
-    if (!musicos || !Array.isArray(musicos) || musicos.length === 0) {
-      throw new NotFoundException(
-        `Não existem musicos cadastrados no banco de dados`,
-      );
+    if (id) {
+      queryBuilder.andWhere('musico.id = :id', { id });
     }
+    if (nome) {
+      queryBuilder.andWhere('musico.fullName LIKE :nome', { nome: `%${nome}%` });
+    }
+    const [musicos, total] = await queryBuilder
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
 
-    return musicos;
+    if (!musicos || musicos.length === 0) {
+      throw new NotFoundException(`Nenhum músico encontrado.`);
+    }
+    return { rows: musicos, total };
   }
 
   async findOne(id: number): Promise<Musico> {

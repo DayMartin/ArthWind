@@ -1,18 +1,12 @@
-// create-musico.dto.ts
 import {
   IsNotEmpty,
   IsString,
-  IsInt,
-  IsArray,
-  ArrayNotEmpty,
   IsEmail,
+  IsNumber,
+  IsInt,
 } from 'class-validator';
 
 export class CreateMusicoDto {
-  @IsNotEmpty()
-  @IsInt()
-  id: number;
-
   @IsNotEmpty()
   @IsString()
   fullName: string;
@@ -20,5 +14,21 @@ export class CreateMusicoDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  senha: string;
+
+  @IsNotEmpty()
+  @IsString()
+  type: string;
+
+  @IsNotEmpty()
+  @IsString()
+  status: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  valorEvento: number;
 
 }

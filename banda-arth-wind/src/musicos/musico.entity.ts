@@ -13,6 +13,18 @@ export class Musico {
   @Column({ unique: true })
   email: string;
 
+  @Column()
+  senha: string;
+
+  @Column()
+  type: string;
+
+  @Column()
+  status: string;
+
+  @Column()
+  valorEvento: number;
+
   @OneToMany(() => MusicoInstrumento, (musicoInstrumento) => musicoInstrumento.musico)
   musicoInstrumentos: MusicoInstrumento[];
 
