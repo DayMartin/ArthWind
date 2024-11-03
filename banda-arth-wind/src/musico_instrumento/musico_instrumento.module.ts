@@ -11,5 +11,6 @@ import { Instrumento } from 'src/instrumentos/instrumento.entity';
   imports: [TypeOrmModule.forFeature([MusicoInstrumento, Musico, Instrumento])],
   providers: [MusicoInstrumentoService],
   controllers: [MusicoInstrumentoController],
+  exports: [MusicoInstrumentoService]
 })
 export class MusicoInstrumentoModule {}
