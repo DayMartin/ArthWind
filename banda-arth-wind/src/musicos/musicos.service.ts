@@ -56,6 +56,18 @@ export class MusicosService {
     return { rows: musicos, total };
   }
 
+  async findList(): Promise<Musico[]> {
+    const musicos = await this.musicosRepository.find();
+
+    if (!musicos || !Array.isArray(musicos) || musicos.length === 0) {
+      throw new NotFoundException(
+        `Não existem musicos cadastrados no banco de dados`,
+      );
+    }
+
+    return musicos;
+  }
+
   async findOne(id: number): Promise<Musico> {
     const musico = await this.musicosRepository.findOneBy({ id });
     if (!musico) {
@@ -65,13 +77,37 @@ export class MusicosService {
   }
 
   async update(id: number, updateMusicoDto: UpdateMusicoDto): Promise<Musico> {
-    await this.findOne(id);
-    await this.musicosRepository.update(id, updateMusicoDto);
-    return this.findOne(id);
+    try {
+      await this.findOne(id);
+      await this.musicosRepository.update(id, updateMusicoDto);
+      return this.findOne(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`Músico com id ${id} não encontrado.`);
+      }
+      throw new InternalServerErrorException('Erro ao atualizar o músico.');
+    }
   }
 
+  async updateStatus(id: number, status: string): Promise<Musico> {
+    const musico = await this.findOne(id);
+    if (!musico) {
+      throw new NotFoundException(`Músico com id ${id} não encontrado.`);
+    }
+    musico.status = status;
+    await this.musicosRepository.save(musico);
+    return musico;
+  }
+  
   async remove(id: number): Promise<void> {
-    await this.findOne(id);
-    await this.musicosRepository.delete(id);
+    try {
+      await this.findOne(id);
+      await this.musicosRepository.delete(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`Músico com id ${id} não encontrado.`);
+      }
+      throw new InternalServerErrorException('Erro ao remover o músico.');
+    }
   }
 }

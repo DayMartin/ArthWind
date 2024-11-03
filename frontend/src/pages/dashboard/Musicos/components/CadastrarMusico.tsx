@@ -19,7 +19,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title,
         valorEvento: 0,
       });
       
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -91,7 +91,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title,
                     </FormControl>
 
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name="fullName"
                                 label="fullName"
@@ -102,7 +102,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title,
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name="valorEvento"
                                 label="Valor/Hora Evento"
@@ -115,7 +115,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title,
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name="email"
                                 label="Email"
@@ -125,7 +125,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title,
                                 margin="normal"
                             />
                         </Grid>
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 id="senha"
                                 label="Senha"

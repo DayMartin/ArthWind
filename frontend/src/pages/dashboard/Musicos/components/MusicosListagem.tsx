@@ -23,6 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { ApiResponseMusico, MusicoDetalhe } from "@/shared/interfaces/MusicoInterface";
 import { MusicoService } from "@/shared/services/api/MusicoService";
 import { BarraMusicos } from "./BarraMusicos";
+import MusicoDetalhesDialog from "./VisualizarEditarMusico";
 
 const MusicosListagem = () => {
 
@@ -32,11 +33,14 @@ const MusicosListagem = () => {
   const [filterId, setFilterId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [selectedMusico, setSelectedMusico] = useState<MusicoDetalhe | null>(null);
+  const [open, setOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const listarMusicos = async () => {
       setIsLoading(true);
       try {
-          const consulta = await MusicoService.findAll(page + 1, filterId);
+          const consulta = await MusicoService.findAllMusicos(page + 1, filterId);
           if (consulta instanceof Error) {
               setRows([]);
               setTotalRecords(0);
@@ -75,19 +79,45 @@ const MusicosListagem = () => {
     } catch (error) {
         console.error('Erro ao listar', error)
     }
-}
-
-  const handleViewMusico = (id: number) => {
-    console.log("Visualizar músico com ID:", id);
   };
 
-  const handleEditMusico = (id: number) => {
-    console.log("Editar músico com ID:", id);
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedMusico(null);
+    setIsEditing(false);
   };
 
-  const handleDeleteMusico = (id: number) => {
-    console.log("Excluir músico com ID:", id);
+  const handleSave = async (updatedMusico: MusicoDetalhe) => {
+      try {
+          await MusicoService.updateMusico(updatedMusico.id, updatedMusico);
+          alert('Músico atualizado com sucesso');
+          await listarMusicos();
+      } catch (error) {
+          alert('Erro ao atualizar Músico');
+      }
   };
+
+  const handleVisualizarMusico = (musico: MusicoDetalhe) => {
+    setSelectedMusico(musico);
+    setOpen(true);
+    setIsEditing(false);
+  };
+
+  const handleEditarMusico = (client: MusicoDetalhe) => {
+    setSelectedMusico(client);
+    setOpen(true);
+    setIsEditing(true);
+  };
+
+  const handleStatusMusico = async(id: number, status: string) => {
+    try {
+      await MusicoService.updateStatus(id, status);
+      listarMusicos();
+    } catch (error) {
+      alert(error)
+    }
+  };
+
 
   return (
     <Box>
@@ -110,53 +140,63 @@ const MusicosListagem = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((musicos) => (
-                <TableRow key={musicos.id}>
+              {rows.map((musico) => (
+                <TableRow key={musico.id}>
+                <TableCell>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: '50%',
+                      backgroundColor: '#E9967A',
+                      color: 'white',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}
+                  >
+                    {musico.fullName
+                      .split(' ')
+                      .slice(0, 2)
+                      .map((name) => name[0])
+                      .join('')
+                      .toUpperCase()}
+                  </div>
+                </TableCell>
+                  <TableCell>{musico.fullName}</TableCell>
                   <TableCell>
-                    <img
-                      src={musicos.fullName}
-                      alt={musicos.fullName}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: '50%',
-                        objectFit: 'cover', 
-                        backgroundColor: 'blue'
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>{musicos.fullName}</TableCell>
-                  <TableCell>
-                      {musicos.status === 'Ativo' ? (
+                      {musico.status === 'Ativo' ? (
                           <CheckCircleIcon color="success" />
                       ) : (
                           <DoDisturbOnIcon color="error" />
                       )}
                   </TableCell>
-                  <TableCell>{musicos.valorEvento}</TableCell>
-                  <TableCell>{musicos.type}</TableCell>
+                  <TableCell>{musico.valorEvento}</TableCell>
+                  <TableCell>{musico.type}</TableCell>
                   <TableCell>
                     <Button
                       variant="outlined"
-                      onClick={() => handleViewMusico(musicos.id)}
+                      onClick={() => handleVisualizarMusico(musico)}
                       sx={{ mr: 1 }}
                     >
                     <VisibilityIcon />
                     </Button>
                     <Button
                       variant="outlined"
-                      onClick={() => handleEditMusico(musicos.id)}
+                      onClick={() => handleEditarMusico(musico)}
                       sx={{ mr: 1 }}
                     >
                     <EditIcon />
                     </Button>
-                    {musicos.status === 'Ativo' ? (
-                          <Button onClick={() => handleDeleteMusico(musicos.id)}>
-                              <DeleteIcon color="error" />
+                    {musico.status === 'Ativo' ? (
+                          <Button onClick={() => handleStatusMusico(musico.id, 'Inativo')}>
+                              Desativar
                           </Button>
                       ) : (
-                          <Button onClick={() => handleDeleteMusico(musicos.id)}>
-                              <CheckCircleIcon color="success" />
+                          <Button onClick={() => handleStatusMusico(musico.id, 'Ativo')}>
+                              Ativar
                           </Button>
                       )}
                   </TableCell>
@@ -175,6 +215,15 @@ const MusicosListagem = () => {
           onRowsPerPageChange={handleRowsPerPageChange}
           />
       </Box>
+      {selectedMusico && (
+                <MusicoDetalhesDialog
+                    open={open}
+                    musico={selectedMusico}
+                    isEditing={isEditing}
+                    onClose={handleClose}
+                    onSave={handleSave}
+                />
+            )}
       {isLoading && <LinearProgress />}
     </Box>
   );

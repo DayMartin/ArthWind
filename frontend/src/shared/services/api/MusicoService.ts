@@ -3,7 +3,7 @@ import { Api } from './axios-config';
 import { MusicoCreate, MusicoDetalhe, ApiResponseMusico } from '@/shared/interfaces/MusicoInterface';
 
 
-const findAll = async (page = 1, filterId = '', filterName = ''): Promise<ApiResponseMusico | Error> => {
+const findAllMusicos = async (page = 1, filterId = '', filterName = ''): Promise<ApiResponseMusico | Error> => {
   try {
     const urlRelativa = `${Environment.URL_BASE}/musicos/all?page=${page}&filterId=${filterId}&filterName=${filterName}`;
     const { data } = await Api.get(urlRelativa);
@@ -19,10 +19,9 @@ const findAll = async (page = 1, filterId = '', filterName = ''): Promise<ApiRes
   }
 };
 
-
-const getUsers = async (): Promise<MusicoDetalhe[] | Error> => {
+const findListMusicos = async (): Promise<MusicoDetalhe[] | Error> => {
   try {
-    const urlRelativa = `${Environment.URL_BASE}/user/list`;
+    const urlRelativa = `${Environment.URL_BASE}/musicos/list`;
     const { data } = await Api.get<MusicoDetalhe[]>(urlRelativa);
 
     if (data) {
@@ -36,40 +35,7 @@ const getUsers = async (): Promise<MusicoDetalhe[] | Error> => {
   }
 };
 
-const getUsersList = async (page = 1, filterId = '', filterName = ''): Promise<ApiResponseMusico | Error> => {
-  try {
-    const urlRelativa = `${Environment.URL_BASE}/user/getAlltipoList?page=${page}&id=${filterId}&nome=${filterName}`;
-
-    const { data } = await Api.get<ApiResponseMusico>(urlRelativa);
-
-    if (data) {
-      return data;
-    }
-
-    return new Error('Erro ao listar os registros.');
-  } catch (error) {
-    console.error(error);
-    return new Error((error as { message: string }).message || 'Erro ao listar os registros.');
-  }
-};
-
-// const getByEmail = async (email: string): Promise<MusicoDetalhe | Error> => {
-//   try {
-//     const { data } = await Api.get(`/auth/register/email?email=${email}`); 
-
-//     if (data) {
-//       return data;
-//     }
-
-//     return new Error('Erro ao consultar o registro.');
-//   } catch (error) {
-//     console.error(error);
-//     return new Error((error as { message: string }).message || 'Erro ao consultar o registro.');
-//   }
-// };
-
 const create = async (dados: MusicoCreate): Promise<any> => {
-  console.log('dados', dados)
   try {
     const response = await Api.post<MusicoCreate>('/musicos/create', dados);
     return response.data;
@@ -79,39 +45,28 @@ const create = async (dados: MusicoCreate): Promise<any> => {
   }
 };
 
-
-const updateById = async (id: string, dados: MusicoDetalhe): Promise<void | Error> => {
+const updateMusico = async (id: number, dados: MusicoDetalhe): Promise<void | Error> => {
   try {
-    await Api.put(`user/edit/${id}`, dados);
+    await Api.put(`musicos/${id}`, dados);
   } catch (error) {
     console.error(error);
     return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
   }
 };
 
-const deleteById = async (id: string): Promise<void | Error> => {
+const updateStatus = async (id: number, status: string): Promise<void | Error> => {
   try {
-    await Api.delete(`/user/delete/${id}`); 
+    await Api.patch(`/musicos/${id}/status`, { status });
   } catch (error) {
     console.error(error);
-    return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');
+    return new Error((error as { message: string }).message || 'Erro ao atualizar o status.');
   }
 };
 
-const ativarById = async (id: string): Promise<void | Error> => {
+const findOneMusico = async (id: number): Promise<MusicoDetalhe | Error> => {
   try {
-    await Api.put(`/user/ativar/${id}`); 
-  } catch (error) {
-    console.error(error);
-    return new Error((error as { message: string }).message || 'Erro ao ativar o usuário.');
-  }
-};
-
-const getByID = async (id: number): Promise<MusicoDetalhe | Error> => {
-  try {
-    const urlRelativa = `${Environment.URL_BASE}/user/get`;
-    // Envie o id dentro de um objeto
-    const { data } = await Api.post(urlRelativa, { id });
+    const urlRelativa = `${Environment.URL_BASE}/musicos/${id}`;
+    const { data } = await Api.get(urlRelativa);
 
     if (data) {
       return data;
@@ -124,15 +79,11 @@ const getByID = async (id: number): Promise<MusicoDetalhe | Error> => {
   }
 };
 
-
 export const MusicoService = {
-  getUsersList,
   create,
-  updateById,
-  deleteById,
-  // getByEmail,
-  ativarById,
-  getUsers,
-  findAll,
-  getByID
+  updateMusico,
+  updateStatus,
+  findListMusicos,
+  findAllMusicos,
+  findOneMusico
 };
