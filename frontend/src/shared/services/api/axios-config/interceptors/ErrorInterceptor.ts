@@ -25,6 +25,9 @@ export const errorInterceptor = (error: AxiosError) => {
     } else if (status === 409) {
       alert("Erro 409: E-mail já cadastrado!");
       return Promise.reject(new Error('Erro 400: E-mail já cadastrado.'));
+    } else if (status === 448) {
+      alert("Não é possível excluir este instrumento porque ele está atrelado a um ou mais músicos.!");
+      return Promise.reject(new Error('Não é possível excluir este instrumento porque ele está atrelado a um ou mais músicos..'));
     } else {
       alert("Erro inesperado");
       return Promise.reject(new Error('Erro inesperado'));
