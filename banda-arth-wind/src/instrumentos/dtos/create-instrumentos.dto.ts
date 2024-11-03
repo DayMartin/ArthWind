@@ -10,10 +10,6 @@ import {
 
 export class CreateInstrumentoDto {
   @IsNotEmpty()
-  @IsInt()
-  id: number;
-
-  @IsNotEmpty()
   @IsString()
   name: string;
 

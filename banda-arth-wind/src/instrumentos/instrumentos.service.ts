@@ -3,22 +3,50 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Instrumento } from './instrumento.entity';
+import { MusicoInstrumento } from 'src/musico_instrumento/musico_instrumento.entity';
 import { CreateInstrumentoDto } from './dtos/create-instrumentos.dto';
 import { UpdateInstrumentoDto } from './dtos/update-instrumentos.dto';
-
 @Injectable()
 export class InstrumentosService {
   constructor(
     @InjectRepository(Instrumento)
     private instrumentosRepository: Repository<Instrumento>,
+
+    @InjectRepository(MusicoInstrumento)
+    private musicoInstrumentoRepository: Repository<MusicoInstrumento>,
   ) {}
 
   async create(createInstrumentosDto: CreateInstrumentoDto): Promise<Instrumento> {
     const instrumento = this.instrumentosRepository.create(createInstrumentosDto);
-    return this.instrumentosRepository.save(instrumento);
+    try {
+      return this.instrumentosRepository.save(instrumento);
+    } catch (error) {
+      console.log('Error', error)
+    }
   }
 
-  async findAll(): Promise<Instrumento[]> {
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+    nome?: string,
+  ): Promise<{ rows: Instrumento[]; total: number }> {
+    const queryBuilder = this.instrumentosRepository.createQueryBuilder('instrumentos');
+
+    if (nome) {
+      queryBuilder.andWhere('instrumentos.name LIKE :nome', { nome: `%${nome}%` });
+    }
+    const [instrumentos, total] = await queryBuilder
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
+
+    if (!instrumentos || instrumentos.length === 0) {
+      throw new NotFoundException(`Nenhum instrumento encontrado.`);
+    }
+    return { rows: instrumentos, total };
+  }
+
+  async findList(): Promise<Instrumento[]> {
     const instrumentos = await this.instrumentosRepository.find();
 
     if (!instrumentos || !Array.isArray(instrumentos) || instrumentos.length === 0) {
@@ -45,7 +73,20 @@ export class InstrumentosService {
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id);
+    const instrumento = await this.instrumentosRepository.findOne({ where: { id } });
+    if (!instrumento) {
+      throw new Error('Instrumento não encontrado.');
+    }
+  
+    const count = await this.musicoInstrumentoRepository.count({
+      where: { instrumento: { id } },
+    });
+  
+    if (count > 0) {
+      throw new Error('Não é possível excluir este instrumento porque ele está atrelado a um ou mais músicos.');
+    }
+  
     await this.instrumentosRepository.delete(id);
   }
+  
 }

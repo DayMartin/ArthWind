@@ -1,5 +1,4 @@
-// instrumentos.controller.ts
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { InstrumentosService } from './instrumentos.service';
 import { CreateInstrumentoDto } from './dtos/create-instrumentos.dto';
 import { Instrumento } from './instrumento.entity';
@@ -14,9 +13,18 @@ export class InstrumentosController {
     return this.instrumentosService.create(createInstrumentosDto);
   }
 
-  @Get('all')
-  async findAll(): Promise<Instrumento[]> {
-    return this.instrumentosService.findAll();
+  @Get("all")
+  async findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('nome') nome?: string,
+  ): Promise<{ rows: Instrumento[]; total: number }> {
+    return this.instrumentosService.findAll(page, limit, nome);
+  }
+
+  @Get('list')
+  async findList(): Promise<Instrumento[]> {
+    return this.instrumentosService.findList();
   }
 
   @Get(':id')
@@ -30,7 +38,11 @@ export class InstrumentosController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number): Promise<void> {
-    return this.instrumentosService.remove(id);
+  async remove(@Param('id') id: number) {
+    try {
+      await this.instrumentosService.remove(id);
+    } catch (error) {
+      throw new HttpException(error.message, 448);
+    }
   }
 }
