@@ -18,10 +18,9 @@ export class MusicosController {
   async findAll(
     @Query('page') page: number,
     @Query('limit') limit: number,
-    @Query('id') id?: number,
     @Query('nome') nome?: string,
   ): Promise<{ rows: Musico[]; total: number }> {
-    return this.musicosService.findAll(page, limit, id, nome);
+    return this.musicosService.findAll(page, limit, nome);
   }
 
   @Get('list')

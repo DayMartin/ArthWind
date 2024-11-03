@@ -6,11 +6,7 @@ export const Environment = {
     /**
      * Placeholder exibido nas inputs
      */
-    INPUT_DE_BUSCA: 'Pesquisar...',
-    /**
-     * Texto exibido quando nenhum registro é encontrado em uma listagem
-     */
-    LISTAGEM_VAZIA: 'Nenhum registro encontrado. Para o filtro funcionar na tabela toda, esteja na primeira página da paginação numérica',
+    INPUT_DE_BUSCA: 'Pesquisar por nome',
     /**
      * Url base de consultado dos dados dessa aplicação
      */

@@ -34,17 +34,14 @@ export class MusicosService {
   async findAll(
     page: number = 1,
     limit: number = 10,
-    id?: number,
     nome?: string,
   ): Promise<{ rows: Musico[]; total: number }> {
     const queryBuilder = this.musicosRepository.createQueryBuilder('musico');
 
-    if (id) {
-      queryBuilder.andWhere('musico.id = :id', { id });
-    }
     if (nome) {
       queryBuilder.andWhere('musico.fullName LIKE :nome', { nome: `%${nome}%` });
     }
+    console.log('nome', nome)
     const [musicos, total] = await queryBuilder
       .skip((page - 1) * limit)
       .take(limit)

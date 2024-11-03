@@ -24,6 +24,7 @@ import { ApiResponseMusico, MusicoDetalhe } from "@/shared/interfaces/MusicoInte
 import { MusicoService } from "@/shared/services/api/MusicoService";
 import { BarraMusicos } from "./BarraMusicos";
 import MusicoDetalhesDialog from "./VisualizarEditarMusico";
+import { Environment } from "@/shared/environment";
 
 const MusicosListagem = () => {
 
@@ -36,11 +37,12 @@ const MusicosListagem = () => {
   const [selectedMusico, setSelectedMusico] = useState<MusicoDetalhe | null>(null);
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const limit = Environment.LIMITE_DE_LINHAS
 
   const listarMusicos = async () => {
       setIsLoading(true);
       try {
-          const consulta = await MusicoService.findAllMusicos(page + 1, filterId);
+          const consulta = await MusicoService.findAllMusicos(page + 1, limit, filterId);
           if (consulta instanceof Error) {
               setRows([]);
               setTotalRecords(0);
@@ -68,8 +70,8 @@ const MusicosListagem = () => {
       setPage(0);
   };
 
-  const handleFilterIdChange = (id: string) => {
-      setFilterId(id);
+  const handleFilterIdChange = (name: string) => {
+      setFilterId(name);
       setPage(0);
   };
 
@@ -125,8 +127,7 @@ const MusicosListagem = () => {
         <Typography variant="h4" gutterBottom>
           Lista de Músicos
         </Typography>
-        <BarraMusicos listar={listar}/>
-
+        <BarraMusicos listar={listar} onFilterIdChange={handleFilterIdChange}/>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

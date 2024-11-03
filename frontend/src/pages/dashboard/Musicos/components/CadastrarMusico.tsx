@@ -47,7 +47,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title,
             email: "",
             senha: "",
             type: "",
-            status: "",
+            status: "Ativo",
             valorEvento: 0,
         });
     };

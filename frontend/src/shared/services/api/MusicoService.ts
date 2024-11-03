@@ -3,9 +3,9 @@ import { Api } from './axios-config';
 import { MusicoCreate, MusicoDetalhe, ApiResponseMusico } from '@/shared/interfaces/MusicoInterface';
 
 
-const findAllMusicos = async (page = 1, filterId = '', filterName = ''): Promise<ApiResponseMusico | Error> => {
+const findAllMusicos = async (page = 1, limit = 1, filterName = ''): Promise<ApiResponseMusico | Error> => {
   try {
-    const urlRelativa = `${Environment.URL_BASE}/musicos/all?page=${page}&filterId=${filterId}&filterName=${filterName}`;
+    const urlRelativa = `${Environment.URL_BASE}/musicos/all?page=${page}&limit=${limit}&nome=${filterName}`;
     const { data } = await Api.get(urlRelativa);
 
     if (data) {

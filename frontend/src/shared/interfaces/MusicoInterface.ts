@@ -25,4 +25,6 @@ export interface ApiResponseMusico {
 
 export interface BarraMusicosProps {
     listar: () => void
+    onFilterIdChange: (id: string) => void;
+
 }

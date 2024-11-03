@@ -1,15 +1,20 @@
-import { Box, Button } from "@mui/material";
 import * as React from "react";
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Button, Grid, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { MusicoService } from "@/shared/services/api/MusicoService";
 import { BarraMusicosProps, MusicoCreate } from "@/shared/interfaces/MusicoInterface";
 import CadastrarMusico from "./CadastrarMusico";
-
+import { Environment } from "@/shared/environment";
 
 export const BarraMusicos: React.FC<BarraMusicosProps> = ({
-    listar
+    listar,
+    onFilterIdChange,
 }) => {
+    const [debounceTimer, setDebounceTimer] = React.useState<NodeJS.Timeout | null>(null);
     const [open, setOpen] = React.useState(false);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const placeholder = Environment.INPUT_DE_BUSCA;
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -19,19 +24,34 @@ export const BarraMusicos: React.FC<BarraMusicosProps> = ({
         if (result instanceof Error) {
             console.log(result.message);
         } else {
-          alert('Músico criado com sucesso!');
-          listar();
-          handleClose();
+            alert('Músico criado com sucesso!');
+            listar();
+            handleClose();
         }
-      };
-      
+    };
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        setSearchTerm(newValue);
+
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+
+        const timer = setTimeout(() => {
+            const [name] = newValue.split(' ');
+            onFilterIdChange(name);
+        }, 700); 
+
+        setDebounceTimer(timer);
+    }; 
 
     return (
         <Box
             sx={{
                 m: 1,
-                width: "auto",
-                height: '30px',
+                width: "100%",
+                height: '60px',
                 marginTop: "2%",
                 paddingTop: '2%',
                 paddingBottom: '2%',
@@ -42,18 +62,34 @@ export const BarraMusicos: React.FC<BarraMusicosProps> = ({
                 position: 'relative',
             }}
         >
+            <Button 
+                variant="contained" 
+                onClick={handleOpen} 
+                sx={{ 
+                    mb: 2, 
+                    minWidth: '150px',
+                    whiteSpace: 'nowrap'
+                }}
+            >
+                Adicionar Músico                 
+            </Button>
 
-        <Button variant="contained" onClick={handleOpen} sx={{ mb: 2 }}>
-            Adicionar Músico                 
-        </Button>
-        <Box sx={{
-            flexGrow: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            <Grid container spacing={2} alignItems="center" justifyContent="flex-end">
+                <Grid item xs={12} sm={4}>
+                    <TextField
+                        fullWidth
+                        placeholder={placeholder}
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        InputProps={{
+                            endAdornment: (
+                                <SearchIcon />
+                            ),
+                        }}
+                    />
+                </Grid>
+            </Grid>
 
-        }}>
-        </Box>
             <CadastrarMusico open={open} onClose={handleClose} title="Novo Músico" onSubmit={handleSubmit} />
         </Box>
     );
