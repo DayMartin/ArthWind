@@ -10,10 +10,9 @@ import MenuItem from "@mui/material/MenuItem";
 
 const menuItems = [
   { label: "Início", path: "/" },
-  { label: "Músicos", path: "dashboard/Musicos/Musicos" },
-  { label: "Instrumentos", path: "/instrumentos" },
+  { label: "Músicos", path: "/dashboard/Musicos/Musicos" }, 
+  { label: "Instrumentos", path: "/dashboard/Instrumentos/Instrumentos" },
 ];
-
 export const BarraInicialHome: React.VFC = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
