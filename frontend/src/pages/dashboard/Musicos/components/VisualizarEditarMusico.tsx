@@ -1,21 +1,13 @@
 import * as React from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Typography, Grid, FormControl, Select, SelectChangeEvent, InputLabel, MenuItem } from "@mui/material";
-import { MusicoDetalhe } from "@/shared/interfaces/MusicoInterface";
+import { MusicoDetalhe, MusicoDetalhesDialogProps } from "@/shared/interfaces/MusicoInterface";
 
-interface MusicoDetalhesDialogProps {
-    open: boolean;
-    onClose: () => void;
-    musico: MusicoDetalhe | null;
-    onSave?: (musico: MusicoDetalhe) => void;
-    isEditing: boolean;
-}
-
-const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClose, musico: client, onSave, isEditing }) => {
+const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClose, musico: musico, onSave, isEditing }) => {
     const [editMusico, setEditMusico] = React.useState<MusicoDetalhe | null>(null);
 
 
     React.useEffect(() => {
-        setEditMusico(client || {
+        setEditMusico(musico || {
             id: 0,
             fullName: "",
             email: "",
@@ -24,7 +16,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
             status: "Ativo",
             valorEvento: 0,
         });
-    }, [client]);
+    }, [musico]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

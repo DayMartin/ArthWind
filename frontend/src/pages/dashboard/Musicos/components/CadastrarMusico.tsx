@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Modal, Typography, TextField, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Grid } from "@mui/material";
 import { MusicoCreate } from "@/shared/interfaces/MusicoInterface";
-
-interface CadastrarMusicoProps {
-    open: boolean;
-    onClose: () => void;
-    title: string;
-    onSubmit: (data: any) => void; 
-}
+import { CadastrarMusicoProps } from "@/shared/interfaces/MusicoInterface";
 
 const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title, onSubmit }) => {
     const [formData, setFormData] = useState<MusicoCreate>({

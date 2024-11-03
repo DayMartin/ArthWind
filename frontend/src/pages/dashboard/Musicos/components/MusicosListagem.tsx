@@ -105,8 +105,8 @@ const MusicosListagem = () => {
     setIsEditing(false);
   };
 
-  const handleEditarMusico = (client: MusicoDetalhe) => {
-    setSelectedMusico(client);
+  const handleEditarMusico = (musico: MusicoDetalhe) => {
+    setSelectedMusico(musico);
     setOpen(true);
     setIsEditing(true);
   };
