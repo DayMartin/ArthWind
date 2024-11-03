@@ -28,3 +28,18 @@ export interface BarraMusicosProps {
     onFilterIdChange: (id: string) => void;
 
 }
+
+export interface CadastrarMusicoProps {
+    open: boolean;
+    onClose: () => void;
+    title: string;
+    onSubmit: (data: any) => void; 
+}
+
+export interface MusicoDetalhesDialogProps {
+    open: boolean;
+    onClose: () => void;
+    musico: MusicoDetalhe | null;
+    onSave?: (musico: MusicoDetalhe) => void;
+    isEditing: boolean;
+}
