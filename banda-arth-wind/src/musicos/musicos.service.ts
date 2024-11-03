@@ -41,7 +41,6 @@ export class MusicosService {
     if (nome) {
       queryBuilder.andWhere('musico.fullName LIKE :nome', { nome: `%${nome}%` });
     }
-    console.log('nome', nome)
     const [musicos, total] = await queryBuilder
       .skip((page - 1) * limit)
       .take(limit)
