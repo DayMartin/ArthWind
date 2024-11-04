@@ -93,6 +93,7 @@ const MusicosListagem = () => {
       try {
           await MusicoService.updateMusico(updatedMusico.id, updatedMusico);
           alert('Músico atualizado com sucesso');
+          console.log('updatedMusico', updatedMusico)
           await listarMusicos();
       } catch (error) {
           alert('Erro ao atualizar Músico');

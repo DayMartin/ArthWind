@@ -5,6 +5,8 @@ import { MusicoService } from "@/shared/services/api/MusicoService";
 import { BarraMusicosProps, MusicoCreate } from "@/shared/interfaces/MusicoInterface";
 import CadastrarMusico from "./CadastrarMusico";
 import { Environment } from "@/shared/environment";
+import { MusicoInstrumento } from "@/shared/services/api/MusicoInstrumento";
+import { MusicoInstrumentoCreate } from "@/shared/interfaces/MusicoInstrumentoInterface";
 
 export const BarraMusicos: React.FC<BarraMusicosProps> = ({
     listar,
@@ -20,13 +22,38 @@ export const BarraMusicos: React.FC<BarraMusicosProps> = ({
 
     const handleSubmit = async (formData: MusicoCreate) => {
         const result = await MusicoService.create(formData);
-        
         if (result instanceof Error) {
             console.log(result.message);
         } else {
-            alert('Músico criado com sucesso!');
+            const musicoId = result.id;
+            if (formData.instrumentos && formData.instrumentos.length > 0) {
+                for (const instrumentoId of formData.instrumentos) {
+                    const dados: MusicoInstrumentoCreate = {
+                        musicoId: musicoId,
+                        instrumentoId: instrumentoId
+                    };
+
+                    const instrumentoResult = await createMusicoInstrumento(dados);
+
+                    if (instrumentoResult instanceof Error) {
+                        console.log(instrumentoResult.message);
+                    } else {
+                        console.log(`Instrumento ${instrumentoId} adicionado ao músico ${musicoId}`);
+                    }
+                }
+            }
             listar();
             handleClose();
+        }
+    };
+
+    const createMusicoInstrumento = async (dados: MusicoInstrumentoCreate) => {
+        const resultMusicoInstrumento = await MusicoInstrumento.create(dados)
+
+        if (resultMusicoInstrumento instanceof Error) {
+            return resultMusicoInstrumento.message;
+        } else {
+            return resultMusicoInstrumento
         }
     };
 
@@ -41,10 +68,10 @@ export const BarraMusicos: React.FC<BarraMusicosProps> = ({
         const timer = setTimeout(() => {
             const [name] = newValue.split(' ');
             onFilterIdChange(name);
-        }, 700); 
+        }, 700);
 
         setDebounceTimer(timer);
-    }; 
+    };
 
     return (
         <Box
@@ -62,16 +89,16 @@ export const BarraMusicos: React.FC<BarraMusicosProps> = ({
                 position: 'relative',
             }}
         >
-            <Button 
-                variant="contained" 
-                onClick={handleOpen} 
-                sx={{ 
-                    mb: 2, 
+            <Button
+                variant="contained"
+                onClick={handleOpen}
+                sx={{
+                    mb: 2,
                     minWidth: '150px',
                     whiteSpace: 'nowrap'
                 }}
             >
-                Adicionar Músico                 
+                Adicionar Músico
             </Button>
 
             <Grid container spacing={2} alignItems="center" justifyContent="flex-end">

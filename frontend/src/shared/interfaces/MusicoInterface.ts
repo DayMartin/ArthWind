@@ -5,6 +5,7 @@ export interface MusicoCreate {
     type: string;
     status: string;
     valorEvento: number;
+    instrumentos: number[];
 }
   
 export interface MusicoDetalhe {
@@ -15,6 +16,7 @@ export interface MusicoDetalhe {
     type: string;
     status: string;
     valorEvento: number;
+    instrumentos: number[];
 }
   
 
