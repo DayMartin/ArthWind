@@ -122,7 +122,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({ open, onClose, title,
                                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                                     displayEmpty
                                 >
-                                    <MenuItem value="adm">Administrador</MenuItem>
+                                    <MenuItem value="admin">Administrador</MenuItem>
                                     <MenuItem value="musico">Músico</MenuItem>
                                 </Select>
                             </FormControl>

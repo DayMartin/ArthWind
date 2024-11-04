@@ -1,59 +1,78 @@
 import * as React from "react";
 import {
-    Dialog, DialogTitle, DialogContent, DialogActions, Button,
-    TextField, Typography, Grid, FormControl, Select,
-    SelectChangeEvent, InputLabel, MenuItem, Table,
-    TableBody, TableCell, TableContainer, TableHead, TableRow,
-    Paper
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    TextField,
+    Typography,
+    Grid,
+    SelectChangeEvent,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TableContainer,
+    Paper,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
 } from "@mui/material";
-import { MusicoDetalhe, MusicoDetalhesDialogProps } from "@/shared/interfaces/MusicoInterface";
+import { MusicoDetalhe } from "@/shared/interfaces/MusicoInterface";
+import { MusicoService } from "@/shared/services/api/MusicoService";
+import { BarraPerfilUsuarioProps } from "@/shared/interfaces/UsuarioInterface";
 import { MusicoInstrumentoDetalhe } from "@/shared/interfaces/MusicoInstrumentoInterface";
+import { InstrumentoDetalhe } from "@/shared/interfaces/InstrumentoInterface";
 import { MusicoInstrumento } from "@/shared/services/api/MusicoInstrumento";
 import { InstrumentoService } from "@/shared/services/api/InstrumentoService";
-import { InstrumentoDetalhe } from "@/shared/interfaces/InstrumentoInterface";
 
-const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClose, musico, onSave, isEditing }) => {
-    const [editMusico, setEditMusico] = React.useState<MusicoDetalhe | null>(null);
+
+const PerfilUsuario: React.FC<BarraPerfilUsuarioProps> = ({ open, onClose, idUser }) => {
+    const isEditing = true;
+    const [editUser, setEditUser] = React.useState<MusicoDetalhe | null>(null);
     const [instrumentos, setInstrumentos] = React.useState<MusicoInstrumentoDetalhe[]>([]);
     const [todosInstrumentos, setTodosInstrumentos] = React.useState<InstrumentoDetalhe[]>([]);
     const [selectedInstrument, setSelectedInstrument] = React.useState<number | "">("");
 
-    React.useEffect(() => {
-        if (musico) {
-            setEditMusico({
-                ...musico,
-                instrumentos: musico.instrumentos || []
-            });
-            ConsultarInstrumentosMusico(musico.id);
-        } else {
-            setEditMusico({
-                id: 0,
-                fullName: "",
-                email: "",
-                senha: "",
-                type: "",
-                status: "Ativo",
-                valorEvento: 0,
-                instrumentos: []
-            });
+    const consultaUser = async () => {
+        try {
+            const dados = await MusicoService.findOneMusico(idUser);
+            if (dados instanceof Error) {
+                setEditUser(null);
+            } else {
+                setEditUser(dados);
+            }
+        } catch (error) {
+            console.error("Error", error);
         }
-        ConsultarInstrumentos();
-    }, [musico]);
+    };
+
+    React.useEffect(() => {
+        if (open) {
+            consultaUser();
+        } else {
+            setEditUser(null);
+        }
+    }, [open, idUser]);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        if (editMusico) {
-            setEditMusico({
-                ...editMusico,
+        if (editUser) {
+            setEditUser({
+                ...editUser,
                 [name]: name === 'valorEvento' ? Number(value) : value
             });
         }
     };
 
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
-        if (editMusico) {
-            setEditMusico({
-                ...editMusico,
+        if (editUser) {
+            setEditUser({
+                ...editUser,
                 type: event.target.value,
             });
         }
@@ -64,28 +83,25 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
     };
 
     const handleAddInstrumento = async() => {
-        if (selectedInstrument && editMusico) {
+        if (selectedInstrument && editUser) {
             const instrumentoId = selectedInstrument;
-            const instrumentoExists = editMusico.instrumentos.includes(instrumentoId);
-            if (!instrumentoExists) {
-                const dados = {
-                    musicoId: editMusico.id,
-                    instrumentoId: selectedInstrument
+            const dados = {
+                musicoId: editUser.id,
+                instrumentoId: selectedInstrument
 
-                }
-                const resultMusicoInstrumento = await MusicoInstrumento.create(dados)
-                if (resultMusicoInstrumento instanceof Error) {
-                    return resultMusicoInstrumento.message;
-                } else {
-                    alert('Instrumento adicionado com sucesso!');
-                    onClose();
-                }
+            }
+            const resultMusicoInstrumento = await MusicoInstrumento.create(dados)
+            if (resultMusicoInstrumento instanceof Error) {
+                return resultMusicoInstrumento.message;
+            } else {
+                alert('Instrumento adicionado com sucesso!');
+                onClose();
             }
         }
     };
 
     const handleRemoveInstrumento = async(instrumentoId: number) => {
-        if (editMusico) {
+        if (editUser) {
             const resultMusicoInstrumento = await MusicoInstrumento.deleteMusicoInstrumento(instrumentoId)
             if (resultMusicoInstrumento instanceof Error) {
                 return resultMusicoInstrumento.message;
@@ -96,12 +112,6 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
         }
     };
 
-    const handleSave = () => {
-        if (editMusico && onSave) {
-            onSave(editMusico);
-            onClose();
-        }
-    };
 
     const ConsultarInstrumentosMusico = async (musicoId: number) => {
         try {
@@ -133,11 +143,34 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
         }
     };
 
+    const handleSave = async () => {
+        if (editUser) {
+            await onSave(editUser);
+            onClose();
+        }
+    };
+
+    const onSave = async (updatedMusico: MusicoDetalhe) => {
+        try {
+            await MusicoService.updateMusico(updatedMusico.id, updatedMusico);
+            alert('Músico atualizado com sucesso');
+            console.log('updatedMusico', updatedMusico)
+            await consultaUser();
+        } catch (error) {
+            alert('Erro ao atualizar Músico');
+        }
+    };
+
+    React.useEffect(() => {
+        ConsultarInstrumentosMusico(idUser);
+        ConsultarInstrumentos();
+    }, [editUser]);
+
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{isEditing ? "Editar Músico" : "Detalhes do Músico"}</DialogTitle>
             <DialogContent>
-                {editMusico ? (
+                {editUser ? (
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -145,7 +178,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                 id="id"
                                 label="ID"
                                 name="id"
-                                value={editMusico.id}
+                                value={editUser.id}
                                 fullWidth
                                 margin="normal"
                                 disabled
@@ -158,7 +191,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                 id="fullName"
                                 label="Nome Completo"
                                 name="fullName"
-                                value={editMusico.fullName}
+                                value={editUser.fullName}
                                 fullWidth
                                 margin="normal"
                                 disabled={!isEditing}
@@ -171,10 +204,10 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                 <Select
                                     labelId="type"
                                     name="type"
-                                    value={editMusico.type}
+                                    value={editUser.type}
                                     onChange={handleSelectChange}
                                     displayEmpty
-                                    disabled={!isEditing}
+                                    disabled
                                 >
                                     <MenuItem value="admin">Administrador</MenuItem>
                                     <MenuItem value="musico">Músico</MenuItem>
@@ -188,7 +221,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                 label="Valor/Hora Evento"
                                 name="valorEvento"
                                 type="number"
-                                value={editMusico.valorEvento}
+                                value={editUser.valorEvento}
                                 fullWidth
                                 margin="normal"
                                 disabled={!isEditing}
@@ -201,7 +234,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                 id="status"
                                 label="Status"
                                 name="status"
-                                value={editMusico.status}
+                                value={editUser.status}
                                 fullWidth
                                 margin="normal"
                                 disabled
@@ -214,7 +247,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                 id="email"
                                 label="Email"
                                 name="email"
-                                value={editMusico.email}
+                                value={editUser.email}
                                 fullWidth
                                 margin="normal"
                                 disabled={!isEditing}
@@ -227,7 +260,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                 label="Senha"
                                 name="senha"
                                 type="password"
-                                value={editMusico.senha || ""}
+                                value={editUser.senha || ""}
                                 fullWidth
                                 margin="normal"
                                 disabled={!isEditing}
@@ -302,4 +335,4 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
     );
 };
 
-export default MusicoDetalhesDialog;
+export default PerfilUsuario;

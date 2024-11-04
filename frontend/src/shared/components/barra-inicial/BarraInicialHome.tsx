@@ -7,14 +7,25 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useAuthContext } from "@/shared/contexts/AuthContext";
+import PerfilUsuario from "../perfil-usuario/PerfilUsuario";
 
 const menuItems = [
   { label: "Início", path: "/" },
-  { label: "Músicos", path: "/dashboard/Musicos/Musicos" }, 
-  { label: "Instrumentos", path: "/dashboard/Instrumentos/Instrumentos" },
+  { label: "Músicos", path: "/dashboard/Musicos/Musicos", requiresAdmin: true },
+  { label: "Instrumentos", path: "/dashboard/Instrumentos/Instrumentos", requiresAdmin: true},
 ];
+
+const settings = ["Perfil", "Sair"];
+
 export const BarraInicialHome: React.VFC = () => {
+  const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const { logout } = useAuthContext();
+  const storedType = typeof window !== "undefined" ? localStorage.getItem('APP_ACCESS_USER_TYPE') : null;
+  const storedID = typeof window !== "undefined" ? localStorage.getItem('APP_ACCESS_USER_ID') : null;
+  const idUser = Number(storedID);
+  const typeLimpo = localStorage.getItem('APP_ACCESS_USER_TYPE')?.replace(/['"]+/g, '');
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -22,6 +33,20 @@ export const BarraInicialHome: React.VFC = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleCloseUserMenu();
+  };
+
+  const handleOpenProfile = () => {
+    setOpen(true);
+    handleCloseUserMenu();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -38,26 +63,32 @@ export const BarraInicialHome: React.VFC = () => {
       }}
     >
       <Box sx={{ display: "flex", gap: 2 }}>
-        {menuItems.map((item) => (
-          <Link key={item.label} href={item.path} passHref>
-            <Typography
-              sx={{
-                cursor: "pointer",
-                color: item.path === "/" ? "#0d47a1" : "grey.700",
-                fontWeight: "bold",
-                textDecoration: item.path === "/" ? "underline" : "none",
-                "&:hover": {
-                  textDecoration: item.path === "/" ? "underline" : "underline dotted",
-                },
-              }}
-            >
-              {item.label}
-            </Typography>
-          </Link>
-        ))}
+        {menuItems.map((item) => {
+          if (item.requiresAdmin && typeLimpo !== "admin") {
+            return null; 
+          }
+
+          return (
+            <Link key={item.label} href={item.path} passHref>
+              <Typography
+                sx={{
+                  cursor: "pointer",
+                  color: item.path === "/" ? "#0d47a1" : "grey.700",
+                  fontWeight: "bold",
+                  textDecoration: item.path === "/" ? "underline" : "none",
+                  "&:hover": {
+                    textDecoration: item.path === "/" ? "underline" : "underline dotted",
+                  },
+                }}
+              >
+                {item.label}
+              </Typography>
+            </Link>
+          );
+        })}
       </Box>
-      
-      <Tooltip title="Configurações">
+
+      <Tooltip title="Sair">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar
             alt="Logo"
@@ -82,10 +113,22 @@ export const BarraInicialHome: React.VFC = () => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem onClick={handleCloseUserMenu}>
-          <Typography textAlign="center">Configurações</Typography>
-        </MenuItem>
+        {settings.map((setting) => (
+          <MenuItem
+            key={setting}
+            onClick={() => {
+              if (setting === "Perfil") {
+                handleOpenProfile();
+              } else if (setting === "Sair") {
+                handleLogout();
+              }
+            }}
+          >
+            <Typography textAlign="center">{setting}</Typography>
+          </MenuItem>
+        ))}
       </Menu>
+      <PerfilUsuario open={open} onClose={handleClose} idUser={idUser} />
     </Box>
   );
 };
