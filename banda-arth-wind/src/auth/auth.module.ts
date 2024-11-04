@@ -8,13 +8,15 @@ import { AuthController } from './auth.controller';
 @Module({
   imports: [
     JwtModule.register({
-        secret: process.env.HASH || "UHSUDHK38DSUHDSKJDUSBCBUUH3",
+        secret: process.env.HASH || 'UHSUDHK38DSUHDSKJDUSBCBUUH3',
         signOptions: { expiresIn: '1h' },
     }),
     MusicosModule,
      
 ],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService],
+  exports: [AuthService, AuthModule],
+
 })
 export class AuthModule {}

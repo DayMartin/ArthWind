@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
         const authHeader = request.headers['authorization'];
-        const token = authHeader && authHeader.split(' ')[1];
+        const token = authHeader && authHeader.split(' ')[1]?.replace(/"/g, '');
 
         if (!token) {
             throw new UnauthorizedException('Token não fornecido');
