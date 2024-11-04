@@ -45,3 +45,4 @@ export interface MusicoDetalhesDialogProps {
     onSave?: (musico: MusicoDetalhe) => void;
     isEditing: boolean;
 }
+

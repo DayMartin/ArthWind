@@ -11,5 +11,6 @@ import { Evento } from 'src/eventos/evento.entity';
   imports: [TypeOrmModule.forFeature([Musico, Instrumento, Evento])],
   providers: [MusicosService],
   controllers: [MusicosController],
+  exports: [MusicosService, MusicosModule],
 })
 export class MusicosModule {}

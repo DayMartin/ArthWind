@@ -2,6 +2,7 @@
 import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { Musico } from './musico.entity';
 import { CreateMusicoDto } from './dtos/create-musicos.dto';
 import { UpdateMusicoDto } from './dtos/update-musicos.dto';
@@ -11,15 +12,20 @@ export class MusicosService {
   constructor(
     @InjectRepository(Musico)
     private musicosRepository: Repository<Musico>,
-  ) {}
+  ) { }
 
   async create(createMusicoDto: CreateMusicoDto): Promise<Musico> {
     const existingMusico = await this.musicosRepository.findOne({
       where: { email: createMusicoDto.email },
     });
+
     if (existingMusico) {
       throw new ConflictException('Email já cadastrado.');
     }
+
+    const salt = await bcrypt.genSalt(10);
+    createMusicoDto.senha = await bcrypt.hash(createMusicoDto.senha, salt);
+
     const musico = this.musicosRepository.create(createMusicoDto);
     try {
       return await this.musicosRepository.save(musico);
@@ -72,9 +78,22 @@ export class MusicosService {
     return musico;
   }
 
+
+
   async update(id: number, updateMusicoDto: UpdateMusicoDto): Promise<Musico> {
     try {
-      await this.findOne(id);
+      const existingMusico = await this.findOne(id);
+
+      if (updateMusicoDto.senha) {
+        const isHash = updateMusicoDto.senha.startsWith('$2') && updateMusicoDto.senha.length === existingMusico.senha.length;
+        if (!isHash) {
+          const salt = await bcrypt.genSalt();
+          updateMusicoDto.senha = await bcrypt.hash(updateMusicoDto.senha, salt);
+        } else {
+          delete updateMusicoDto.senha;
+        }
+      }
+
       await this.musicosRepository.update(id, updateMusicoDto);
       return this.findOne(id);
     } catch (error) {
@@ -85,6 +104,7 @@ export class MusicosService {
     }
   }
 
+
   async updateStatus(id: number, status: string): Promise<Musico> {
     const musico = await this.findOne(id);
     if (!musico) {
@@ -94,7 +114,19 @@ export class MusicosService {
     await this.musicosRepository.save(musico);
     return musico;
   }
-  
+
+  async findByEmail(email: string): Promise<Musico> {
+    const musico = await this.musicosRepository.findOne({
+      where: { email },
+    });
+
+    if (!musico) {
+      throw new NotFoundException(`Músico com o e-mail ${email} não encontrado.`);
+    }
+
+    return musico;
+  }
+
   async remove(id: number): Promise<void> {
     try {
       await this.findOne(id);
