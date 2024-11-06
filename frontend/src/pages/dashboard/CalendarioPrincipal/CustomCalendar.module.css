@@ -16,13 +16,12 @@
 }
 
 
-/* Estilo para o dia atual */
 .fc-day-today {
-  background-color: #ff5722 !important; /* Cor de fundo mais forte para o dia atual */
-  color: white !important; /* Cor do texto */
+  background-color: #ff5722 !important;
+  color: white !important; 
   font-weight: bold !important;
 }
 
 .fc-day-today .fc-day-number {
-  color: white !important;  /* Cor do número do dia */
+  color: white !important;  
 }

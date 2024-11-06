@@ -6,7 +6,7 @@ dotenv.config();
 const production = process.env.NODE_ENV === 'production';
 const demo = process.env.DEMO === 'true';
 
-const db_host = process.env.DB_HOST || 'localhost';
+const db_host = process.env.DB_HOST || 'database';
 const db_port = process.env.DB_PORT || '3306';
 const userdb = process.env.USERDB || 'dinahdoria';
 const passdb = process.env.PASSDB || 'arthwind';

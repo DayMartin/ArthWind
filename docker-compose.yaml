@@ -1,18 +1,63 @@
 version: '3.8'
 
 services:
-  mysql:
+  database:
     image: mysql:latest
-    container_name: mysql-container
+    container_name: database
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword 
       MYSQL_DATABASE: musicalidade      
       MYSQL_USER: dinahdoria            
-      MYSQL_PASSWORD: arthwind           
+      MYSQL_PASSWORD: arthwind   
+      MYSQL_ROOT_HOST: '%'        
     ports:
       - "3306:3306"                       
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/db/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "database", "-u", "dinahdoria", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    networks:
+      - arth
+
+  backend:
+    build:
+      context: ./banda-arth-wind
+      dockerfile: DockerFile
+    container_name: backend-container
+    entrypoint: sh -c "yarn start:dev"
+    ports:
+      - "3048:3048"
+    tty: true
+    depends_on:
+      database:
+        condition: "service_healthy"
+    volumes:
+      - ./banda-arth-wind:/app
+    networks:
+      - arth
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: DockerFile
+    container_name: frontend-container
+    ports:
+      - "3000:3000" 
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/app 
+    networks:
+      - arth
+    tty: true
 
 volumes:
   mysql-data:
+
+networks:
+  arth:
+    driver: bridge

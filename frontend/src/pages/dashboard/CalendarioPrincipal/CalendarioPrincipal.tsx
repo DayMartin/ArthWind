@@ -19,6 +19,7 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
   const [activities, setActivities] = useState<EventDetalhe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const userRole = JSON.parse(localStorage.getItem('APP_ACCESS_USER_TYPE') || '""');
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -30,9 +31,7 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
       if (eventos instanceof Error) {
         setActivities([]);
       } else {
-        const musicoId = localStorage.getItem('APP_ACCESS_USER_ID');
-        const userRole = JSON.parse(localStorage.getItem('APP_ACCESS_USER_TYPE') || '""');
-        
+        const musicoId = localStorage.getItem('APP_ACCESS_USER_ID');        
         if (userRole != 'admin') {
           const eventosFiltrados = await Promise.all(
             eventos.map(async (evento) => {
@@ -261,14 +260,15 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
         </Box>
 
         <Box sx={{ width: '30%', marginLeft: '2%', marginTop: '2%', display: 'flex', flexDirection: 'column' }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleOpen}
-            sx={{ alignSelf: 'center', marginBottom: '1rem' }}
-          >
-            Adicionar Novo Evento
-          </Button>
+        {userRole === 'admin' && (
+            <Button
+              variant="outlined"
+              sx={{ marginBottom: '1rem', border: 1, color: '#489af1' }}
+              onClick={handleOpen}
+            >
+              Criar Novo Evento
+            </Button>
+          )}
 
           <Box sx={{ flexGrow: 1 }}>
             <NextEvento events={events} />
