@@ -21,13 +21,13 @@ export class AuthService {
             throw new UnauthorizedException('Senha incorreta');
         }
 
-        const payload = { id: user.id, email: user.email, type: user.type};
+        const payload = { id: user.id, email: user.email, type: user.type, fullName: user.fullName};
         const token = this.jwtService.sign(payload);
         
         return {
             message: 'Login bem-sucedido',
             token,
-            user: { id: user.id, email: user.email, nome: user.fullName, type: user.type},
+            user: { id: user.id, email: user.email, nome: user.fullName, type: user.type, fullName: user.fullName},
         };
     }
 }

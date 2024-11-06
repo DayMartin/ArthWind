@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Box, Typography, List, ListItemText } from '@mui/material';
 import { ViewEvento } from '@/shared/components/view_detalhe_evento/view_evento';
-import { Activity, Event, NextEventsProps} from '@/shared/interfaces/EventoInterface';
+import { EventDetalhe, NextEventsProps } from '@/shared/interfaces/EventoInterface';
 
 export const NextEvento: React.FC<NextEventsProps> = ({ events }) => {
-  const [selectedEvent, setSelectedEvent] = useState<Activity | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventDetalhe | null>(null);
+  const sortedEvents = [...events].sort((a, b) => new Date(b.data_de).getTime() - new Date(a.data_de).getTime());
+  const nextEvents = sortedEvents.slice(0, 6);
 
-  const nextEvents = events.slice(0, 2);
-
-  const handleEventClick = (event: Event) => {
+  const handleEventClick = (event: EventDetalhe) => {
     setSelectedEvent(event);
   };
 
@@ -39,46 +39,14 @@ export const NextEvento: React.FC<NextEventsProps> = ({ events }) => {
               alignItems: 'center' 
             }}
           >
-            <Box sx={{ display: 'flex', marginRight: 2 }}>
-              <img
-                src="https://i.ibb.co/0fcwMMM/pessoa1.jpg"
-                alt="Músico 1"
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%', 
-                  objectFit: 'cover',  
-                  marginRight: 5, 
-                }}
-              />
-              <img
-                src="https://i.ibb.co/MN1qC3g/pessoa2.jpg"
-                alt="Músico 2"
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  objectFit: 'cover',  
-                  marginRight: 5,
-                }}
-              />
-              <img
-                src="https://i.ibb.co/PzjRs20/pessoa3.webp"
-                alt="Músico 3"
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%', 
-                  objectFit: 'cover', 
-                  marginRight: 5,
-                }}
-              />
-            </Box>
-            <ListItemText primary={event.title} secondary={event.date} />
+            <ListItemText 
+              primary={event.descricao} 
+              secondary={`${event.data_de} - ${event.data_ate}`} 
+            />
           </Box>
         ))}
       </List>
-      <ViewEvento activity={selectedEvent} onClose={handleCloseModal} /> 
+      <ViewEvento activity={selectedEvent} onClose={handleCloseModal} extras={null} /> 
     </Box>
   );
 };

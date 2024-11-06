@@ -6,13 +6,10 @@ import {
   IsArray,
   ArrayNotEmpty,
   IsEmail,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateEventosDto {
-  @IsNotEmpty()
-  @IsInt()
-  id: number;
-
   @IsNotEmpty()
   @IsString()
   descricao: string;
@@ -38,9 +35,9 @@ export class CreateEventosDto {
   @IsString()
   status: string;
 
-  // @IsNotEmpty()
-  // @IsString()
-  // valor_total: string;
+  @IsNotEmpty()
+  @IsNumber()
+  valor_total: number;
 
   // @IsNotEmpty()
   // @IsString()

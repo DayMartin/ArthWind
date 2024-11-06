@@ -31,12 +31,18 @@ export class EventosService {
   }
 
   async findOne(id: number): Promise<Evento> {
-    const evento = await this.eventosRepository.findOneBy({ id });
+    const evento = await this.eventosRepository.findOne({
+      where: { id },
+      relations: ['evento_musico'],
+    });
+  
     if (!evento) {
-      throw new NotFoundException(`evento com o id ${id} não existe`);
+      throw new NotFoundException(`Evento com o id ${id} não existe`);
     }
+  
     return evento;
   }
+  
 
   async update(id: number, updateEventoDto: UpdateEventosDto): Promise<Evento> {
     await this.findOne(id);

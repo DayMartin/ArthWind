@@ -22,7 +22,7 @@ export class EventoMusicoController {
     return this.evento_musicoService.getAllEventoMusico();
   }
   
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   async getEventoMusico(@Param('id') id: number): Promise<EventoMusico> {
     return this.evento_musicoService.getEventoMusicoById(id);

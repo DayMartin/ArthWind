@@ -78,8 +78,6 @@ export class MusicosService {
     return musico;
   }
 
-
-
   async update(id: number, updateMusicoDto: UpdateMusicoDto): Promise<Musico> {
     try {
       const existingMusico = await this.findOne(id);
@@ -103,7 +101,6 @@ export class MusicosService {
       throw new InternalServerErrorException('Erro ao atualizar o músico.');
     }
   }
-
 
   async updateStatus(id: number, status: string): Promise<Musico> {
     const musico = await this.findOne(id);

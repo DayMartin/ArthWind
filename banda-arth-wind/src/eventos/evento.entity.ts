@@ -24,7 +24,10 @@ export class Evento {
   @Column()
   status: string;
 
-  @OneToMany(() => EventoMusico, (evento_musico) => evento_musico.musico)
+  @Column()
+  valor_total: number;
+
+  @OneToMany(() => EventoMusico, (evento_musico) => evento_musico.evento, { eager: true })
   evento_musico: EventoMusico[];
 
 }

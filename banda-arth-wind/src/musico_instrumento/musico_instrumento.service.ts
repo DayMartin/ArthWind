@@ -88,4 +88,24 @@ export class MusicoInstrumentoService {
       relations: ['musico'],
     });
   }
+
+  async getMusicoInstrumentoIdByMusicoAndInstrumento(
+    musicoId: number,
+    instrumentoId: number
+  ): Promise<number> {
+    const musicoInstrumento = await this.musicoInstrumentoRepository.findOne({
+      where: {
+        musico: { id: musicoId },
+        instrumento: { id: instrumentoId },
+      },
+    });
+  
+    if (!musicoInstrumento) {
+      throw new NotFoundException(
+        `MusicoInstrumento with Musico ID ${musicoId} and Instrumento ID ${instrumentoId} not found`
+      );
+    }
+  
+    return musicoInstrumento.id;
+  } 
 }

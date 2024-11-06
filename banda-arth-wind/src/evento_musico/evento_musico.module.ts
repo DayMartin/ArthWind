@@ -8,9 +8,10 @@ import { Musico } from 'src/musicos/musico.entity';
 import { Evento } from 'src/eventos/evento.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { MusicoInstrumento } from 'src/musico_instrumento/musico_instrumento.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EventoMusico, Musico, Evento]),
+  imports: [TypeOrmModule.forFeature([EventoMusico, Musico, Evento, MusicoInstrumento]),
   JwtModule.register({
     secret: process.env.HASH || 'UHSUDHK38DSUHDSKJDUSBCBUUH3',
     signOptions: { expiresIn: '1h' }, 

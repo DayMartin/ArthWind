@@ -1,7 +1,7 @@
 .react-calendar {
   border: none;
   border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px rgb(80, 67, 255);
   font-family: Arial, sans-serif;
 }
 
@@ -11,18 +11,18 @@
 }
 
 .react-calendar__tile--active {
-  background-color: #0d47a1;
+  background-color: #4a56ff;
   color: #12124e;
 }
 
-.activity-indicator {
-  background-color: #13138d;
-  color: #12124e;
-  border-radius: 50%;
-  padding: 4px;
-  font-size: 0.75rem;
-  position: absolute;
-  top: 4px;
-  right: 4px;
+
+/* Estilo para o dia atual */
+.fc-day-today {
+  background-color: #ff5722 !important; /* Cor de fundo mais forte para o dia atual */
+  color: white !important; /* Cor do texto */
+  font-weight: bold !important;
 }
 
+.fc-day-today .fc-day-number {
+  color: white !important;  /* Cor do número do dia */
+}

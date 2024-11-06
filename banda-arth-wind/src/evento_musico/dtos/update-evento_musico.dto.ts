@@ -9,14 +9,14 @@ export class UpdateEventoMusicoDto {
   @IsOptional()
   @IsInt()
   id?: number;
+  
+  @IsOptional()
+  @IsInt()
+  conjuntoid?: number;
 
   @IsOptional()
-  @IsString()
-  musicoId?: string;
-
-  @IsOptional()
-  @IsString()
-  eventoId?: string;
+  @IsInt()
+  eventoId?: number;
 
 
 }

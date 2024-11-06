@@ -28,7 +28,4 @@ export class Musico {
   @OneToMany(() => MusicoInstrumento, (musicoInstrumento) => musicoInstrumento.musico)
   musicoInstrumentos: MusicoInstrumento[];
 
-  @OneToMany(() => EventoMusico, (evento_musico) => evento_musico.musico)
-  evento_musico: EventoMusico[];
-
 }

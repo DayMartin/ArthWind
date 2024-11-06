@@ -6,6 +6,7 @@ import {
   ArrayNotEmpty,
   IsEmail,
   IsOptional,
+  IsNumber,
 } from 'class-validator';
 
 export class UpdateEventosDto {
@@ -36,4 +37,8 @@ export class UpdateEventosDto {
   @IsOptional()
   @IsString()
   status?: string;
+
+  @IsOptional()
+  @IsNumber()
+  valor_total?: number;
 }

@@ -7,12 +7,17 @@ import { CreateEventoMusicoDto } from './dtos/create-evento_musico.dto';
 import { UpdateEventoMusicoDto } from './dtos/update-evento_musico.dto';
 import { Musico } from 'src/musicos/musico.entity';
 import { Evento } from 'src/eventos/evento.entity';
+import { Instrumento } from 'src/instrumentos/instrumento.entity';
+import { MusicoInstrumento } from 'src/musico_instrumento/musico_instrumento.entity';
 
 @Injectable()
 export class EventoMusicoService {
   constructor(
     @InjectRepository(EventoMusico)
     private eventoMusicoRepository: Repository<EventoMusico>,
+
+    @InjectRepository(MusicoInstrumento)
+    private musicoInstrumentoRepository: Repository<MusicoInstrumento>,
 
     @InjectRepository(Musico)
     private musicoRepository: Repository<Musico>,
@@ -22,20 +27,20 @@ export class EventoMusicoService {
   ) {}
 
   async addMusicoAoEvento(createEventoMusicoDto: CreateEventoMusicoDto): Promise<EventoMusico> {
-    const musico = await this.musicoRepository.findOne({
-      where: { id: createEventoMusicoDto.musicoId },
+    const conjunto = await this.musicoInstrumentoRepository.findOne({
+      where: { id: createEventoMusicoDto.conjuntoid },
     });
 
     const evento = await this.eventoRepository.findOne({
       where: { id: createEventoMusicoDto.eventoId },
     });
 
-    if (!musico || !evento) {
-      throw new Error('Músico ou evento não encontrado');
+    if (!conjunto || !evento) {
+      throw new Error('evento ou conjunto não encontrado');
     }
 
     const eventoMusico = this.eventoMusicoRepository.create({
-      musico,
+      conjunto,
       evento,
     });
 
@@ -44,14 +49,14 @@ export class EventoMusicoService {
 
   async getAllEventoMusico(): Promise<EventoMusico[]> {
     return this.eventoMusicoRepository.find({
-      relations: ['musico', 'evento'],
+      relations: ['musico', 'evento', 'instrumento'],
     });
   }
 
   async getEventoMusicoById(id: number): Promise<EventoMusico> {
     const eventoMusico = await this.eventoMusicoRepository.findOne({
       where: { id },
-      relations: ['musico', 'evento'],
+      relations: ['evento', 'conjunto'],
     });
 
     if (!eventoMusico) {
@@ -77,7 +82,7 @@ export class EventoMusicoService {
 
   async getEventoByMusicoId(musicoId: number): Promise<EventoMusico[]> {
     return this.eventoMusicoRepository.find({
-      where: { musico: { id: musicoId } },
+      where: { conjunto: { id: musicoId } },
       relations: ['evento'],
     });
   }
@@ -85,7 +90,7 @@ export class EventoMusicoService {
   async getMusicosByEventoId(eventoId: number): Promise<EventoMusico[]> {
     return this.eventoMusicoRepository.find({
       where: { evento: { id: eventoId } },
-      relations: ['musico'],
+      relations: ["conjunto"],
     });
   }
 }

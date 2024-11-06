@@ -22,7 +22,7 @@ export class EventosController {
     return this.eventosService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Evento> {
     return this.eventosService.findOne(id);
