@@ -10,8 +10,9 @@ const auth = async (email: string, senha: string): Promise<IAuth | Error> => {
       localStorage.setItem('APP_ACCESS_TOKEN', data.token);
       localStorage.setItem('APP_ACCESS_USER_ID', data.id);
       localStorage.setItem('APP_ACCESS_USER_TYPE', data.type);
+      localStorage.setItem('APP_ACCESS_USER_NAME', data.fullName);
 
-      return { token: data.token, id: data.id, type: data.type};
+      return { token: data.token, id: data.id, type: data.type, fullName: data.fullName};
     }
 
     return new Error('Erro no login.');

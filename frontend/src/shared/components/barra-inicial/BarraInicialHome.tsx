@@ -49,6 +49,18 @@ export const BarraInicialHome: React.VFC = () => {
     setOpen(false);
   };
 
+  const getUserInitials = (fullName: string | null) => {
+    if (!fullName) return '';
+    const cleanedName = fullName.replace(/['"]+/g, '');
+    const nameParts = cleanedName.split(' ');
+    const initials = nameParts
+      .slice(0, 2)  
+      .map((part) => part.charAt(0).toUpperCase())  
+      .join('');  
+    return initials;
+  };
+  
+
   return (
     <Box
       sx={{
@@ -92,11 +104,18 @@ export const BarraInicialHome: React.VFC = () => {
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar
             alt="Logo"
-            src="https://gizmodo.uol.com.br/wp-content/blogs.dir/8/files/2023/07/robo-humanoide-chines.png"
-            sx={{ width: { xs: 40, sm: 50 }, height: { xs: 40, sm: 50 } }}
-          />
+            sx={{
+              width: { xs: 40, sm: 50 },
+              height: { xs: 40, sm: 50 },
+              backgroundColor: "#0d47a1", 
+              fontSize: "20px",
+            }}
+          >
+            {getUserInitials(localStorage.getItem('APP_ACCESS_USER_NAME'))}
+          </Avatar>
         </IconButton>
       </Tooltip>
+
       <Menu
         sx={{ mt: "45px" }}
         id="menu-appbar"

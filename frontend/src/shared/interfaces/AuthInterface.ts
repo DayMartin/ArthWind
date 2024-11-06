@@ -7,6 +7,7 @@ export interface IAuthContextData {
     isLoading: boolean; 
     type: string | null;
     id: number | null;
+    name: string | null;
   }
 
 export interface IAuthProviderProps {
@@ -21,6 +22,7 @@ export interface IAuth {
     token: string; 
     id: string;
     type: string;
+    fullName: string;
   
 }
 
