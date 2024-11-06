@@ -173,7 +173,6 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                     name="type"
                                     value={editMusico.type}
                                     onChange={handleSelectChange}
-                                    displayEmpty
                                     disabled={!isEditing}
                                 >
                                     <MenuItem value="admin">Administrador</MenuItem>

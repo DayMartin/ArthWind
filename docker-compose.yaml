@@ -5,18 +5,19 @@ services:
     image: mysql:latest
     container_name: database
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword 
-      MYSQL_DATABASE: musicalidade      
-      MYSQL_USER: dinahdoria            
-      MYSQL_PASSWORD: arthwind   
-      MYSQL_ROOT_HOST: '%'        
+      MYSQL_ROOT_PASSWORD: rootpassword         
+      MYSQL_DATABASE: musicalidade            
+      MYSQL_USER: dinahdoria                  
+      MYSQL_PASSWORD: mysqlpassword         
+      MYSQL_ROOT_HOST: '%'                    
     ports:
-      - "3306:3306"                       
+      - "3306:3306"                           
     volumes:
-      - mysql-data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/db/init.sql
+      - mysql-data:/var/lib/mysql             
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./logs:/var/log/mysql             
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "database", "-u", "dinahdoria", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "database", "-u", "dinahdoria", "-p$$MYSQL_PASSWORD"]
       interval: 5s
       timeout: 10s
       retries: 3
@@ -28,7 +29,6 @@ services:
       context: ./banda-arth-wind
       dockerfile: DockerFile
     container_name: backend-container
-    entrypoint: sh -c "yarn start:dev"
     ports:
       - "3048:3048"
     tty: true

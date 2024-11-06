@@ -206,8 +206,7 @@ const PerfilUsuario: React.FC<BarraPerfilUsuarioProps> = ({ open, onClose, idUse
                                     name="type"
                                     value={editUser.type}
                                     onChange={handleSelectChange}
-                                    displayEmpty
-                                    disabled
+                                    
                                 >
                                     <MenuItem value="admin">Administrador</MenuItem>
                                     <MenuItem value="musico">Músico</MenuItem>

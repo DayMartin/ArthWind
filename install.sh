@@ -10,4 +10,4 @@ cd frontend && yarn
 echo ""
 echo "${green}--------------------install backend--------------------${reset}"
 echo ""
-cd banda-arth-wind && yarn
+cd ../banda-arth-wind && yarn

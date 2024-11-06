@@ -10,7 +10,6 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class MusicosController {
   constructor(private readonly musicosService: MusicosService) {}
 
-  @UseGuards(AuthGuard)
   @Post('create')
   async create(@Body() createMusicoDto: CreateMusicoDto): Promise<Musico> {
     return this.musicosService.create(createMusicoDto);
