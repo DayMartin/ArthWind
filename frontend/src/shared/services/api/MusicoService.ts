@@ -1,6 +1,6 @@
 import { Environment } from '@/shared/environment';
 import { Api } from './axios-config';
-import { MusicoCreate, MusicoDetalhe, ApiResponseMusico } from '@/shared/interfaces/MusicoInterface';
+import { MusicoCreate, MusicoDetalhe, ApiResponseMusico, MusicoUpdate } from '@/shared/interfaces/MusicoInterface';
 
 
 const findAllMusicos = async (page = 1, limit = 1, filterName = ''): Promise<ApiResponseMusico | Error> => {
@@ -45,7 +45,7 @@ const create = async (dados: MusicoCreate): Promise<any> => {
   }
 };
 
-const updateMusico = async (id: number, dados: MusicoDetalhe): Promise<void | Error> => {
+const updateMusico = async (id: number, dados: MusicoUpdate): Promise<void | Error> => {
   try {
     await Api.put(`musicos/${id}`, dados);
   } catch (error) {

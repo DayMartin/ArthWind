@@ -18,6 +18,16 @@ export interface MusicoDetalhe {
     valorEvento: number;
     instrumentos: number[];
 }
+
+export interface MusicoUpdate {
+    id: number;
+    fullName: string;
+    email: string;
+    senha: string;
+    type: string;
+    status: string;
+    valorEvento: number;
+}
   
 
 export interface ApiResponseMusico {

@@ -163,9 +163,10 @@ const PerfilUsuario: React.FC<BarraPerfilUsuarioProps> = ({
     try {
       await MusicoService.updateMusico(updatedMusico.id, updatedMusico);
       alert("Músico atualizado com sucesso");
-      console.log("updatedMusico", updatedMusico);
+      console.log("updatedMusico Perfil", updatedMusico);
       await consultaUser();
     } catch (error) {
+      console.log("error", error);
       alert("Erro ao atualizar Músico");
     }
   };
@@ -351,14 +352,19 @@ const PerfilUsuario: React.FC<BarraPerfilUsuarioProps> = ({
       <DialogActions>
         <Button
           onClick={onClose}
-          sx={{ backgroundColor: "none", color: "#ff8c00", border: 1, borderColor: '#ff8c00' }}
-
+          sx={{
+            backgroundColor: "none",
+            color: "#ff8c00",
+            border: 1,
+            borderColor: "#ff8c00",
+          }}
         >
           Fechar
         </Button>
         {isEditing && (
-          <Button onClick={handleSave}
-          sx={{ backgroundColor: "#ff8c00", color: "white" }}
+          <Button
+            onClick={handleSave}
+            sx={{ backgroundColor: "#ff8c00", color: "white" }}
           >
             Salvar
           </Button>
