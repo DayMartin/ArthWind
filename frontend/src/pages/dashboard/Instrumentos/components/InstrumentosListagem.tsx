@@ -16,11 +16,9 @@ import {
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { ApiResponseInstrumento, InstrumentoDetalhe } from "@/shared/interfaces/InstrumentoInterface";
+import { InstrumentoDetalhe } from "@/shared/interfaces/InstrumentoInterface";
 import { InstrumentoService } from "@/shared/services/api/InstrumentoService";
 import { BarraInstrumentos } from "./BarraInstrumento"; 
 import InstrumentoDetalhesDialog from "./VisualizarEditarInstrumento";
@@ -122,14 +120,14 @@ const InstrumentosListagem = () => {
 
   return (
     <Box>
-      <Box sx={{ padding: 4 }}>
-        <Typography variant="h4" gutterBottom>
+      <Box sx={{ padding: 4, backgroundColor: '#e0e0e0', height: '100vh' }}>
+      <Typography variant="h4" gutterBottom>
           Lista de Instrumentos
         </Typography>
         <BarraInstrumentos listar={listar} onFilterIdChange={handleFilterIdChange}/>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead>
+            <TableHead sx={{backgroundColor: '#f5f5f5'}}>
               <TableRow>
                 <TableCell>Iniciais</TableCell>
                 <TableCell>Nome</TableCell>
@@ -167,14 +165,22 @@ const InstrumentosListagem = () => {
                     <Button
                       variant="outlined"
                       onClick={() => handleVisualizarInstrumento(instrumento)}
-                      sx={{ mr: 1 }}
+                      sx={{
+                        mr: 1,
+                        backgroundColor: 'none', color: '#ffa500',
+                        borderColor: '#ffa500'
+                      }}
                     >
                     <VisibilityIcon />
                     </Button>
                     <Button
                       variant="outlined"
                       onClick={() => handleEditarInstrumento(instrumento)}
-                      sx={{ mr: 1 }}
+                      sx={{
+                        mr: 1,
+                        backgroundColor: 'none', color: '#ffa500',
+                        borderColor: '#ffa500'
+                      }}
                     >
                     <EditIcon />
                     </Button>

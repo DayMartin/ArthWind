@@ -1,25 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import { Box, Button, Typography } from '@mui/material';
-import { ViewEvento } from '@/shared/components/view_detalhe_evento/view_evento';
-import { NextEvento } from './components/NextEvento/NextEvento';
-import './CustomCalendar.module.css';
-import { CustomCalendarProps, EventCreate, EventDetalhe } from '@/shared/interfaces/EventoInterface';
-import { BarraInicialHome } from '@/shared/components/barra-inicial/BarraInicialHome';
-import { EventoService } from '@/shared/services/api/EventoService';
-import NovoEvento from './components/NovoEvento';
-import { EventoMusicoCreate } from '@/shared/interfaces/EventoMusico';
-import { EventoMusico } from '@/shared/services/api/EventoMusicoService';
-import { MusicoInstrumentoCompleto, MusicoInstrumentoCreate } from '@/shared/interfaces/MusicoInstrumentoInterface';
-import { MusicoInstrumento } from '@/shared/services/api/MusicoInstrumento';
+import React, { useEffect, useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import { Box, Button, Typography } from "@mui/material";
+import { ViewEvento } from "@/shared/components/view_detalhe_evento/view_evento";
+import { NextEvento } from "./components/NextEvento/NextEvento";
+import "./CustomCalendar.module.css";
+import {
+  CustomCalendarProps,
+  EventCreate,
+  EventDetalhe,
+} from "@/shared/interfaces/EventoInterface";
+import { BarraInicialHome } from "@/shared/components/barra-inicial/BarraInicialHome";
+import { EventoService } from "@/shared/services/api/EventoService";
+import NovoEvento from "./components/NovoEvento";
+import { EventoMusicoCreate } from "@/shared/interfaces/EventoMusico";
+import { EventoMusico } from "@/shared/services/api/EventoMusicoService";
+import {
+  MusicoInstrumentoCompleto
+} from "@/shared/interfaces/MusicoInstrumentoInterface";
+import { MusicoInstrumento } from "@/shared/services/api/MusicoInstrumento";
+
+const laranja = "#ff8c00"; 
 
 const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
   const [selectedEvent, setSelectedEvent] = useState<EventDetalhe | null>(null);
   const [activities, setActivities] = useState<EventDetalhe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const userRole = JSON.parse(localStorage.getItem('APP_ACCESS_USER_TYPE') || '""');
+  const userRole = JSON.parse(
+    localStorage.getItem("APP_ACCESS_USER_TYPE") || '""'
+  );
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -31,38 +41,47 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
       if (eventos instanceof Error) {
         setActivities([]);
       } else {
-        const musicoId = localStorage.getItem('APP_ACCESS_USER_ID');        
-        if (userRole != 'admin') {
+        const musicoId = localStorage.getItem("APP_ACCESS_USER_ID");
+        if (userRole != "admin") {
           const eventosFiltrados = await Promise.all(
             eventos.map(async (evento) => {
               try {
-                const buscarIConjunto = await EventoMusico.findEventoById(evento.id);
-  
+                const buscarIConjunto = await EventoMusico.findEventoById(
+                  evento.id
+                );
+
                 if (buscarIConjunto && Array.isArray(buscarIConjunto)) {
-                  const extraEventoDataPromises = buscarIConjunto.map(async (eventoMusico: any) => {
-                    const conjuntoId = eventoMusico.conjunto?.id;
-                    if (conjuntoId) {
-                      const data = await consultarDadosExtras(conjuntoId);
-                      return data;
-                    } else {
-                      return null;
+                  const extraEventoDataPromises = buscarIConjunto.map(
+                    async (eventoMusico: any) => {
+                      const conjuntoId = eventoMusico.conjunto?.id;
+                      if (conjuntoId) {
+                        const data = await consultarDadosExtras(conjuntoId);
+                        return data;
+                      } else {
+                        return null;
+                      }
                     }
-                  });
-    
-                  const extraEventosData = await Promise.all(extraEventoDataPromises);
+                  );
+
+                  const extraEventosData = await Promise.all(
+                    extraEventoDataPromises
+                  );
                   const dadosValidos = extraEventosData.filter(
                     (data) => data && !(data instanceof Error)
                   ) as MusicoInstrumentoCompleto[];
-    
+
                   const musicoEncontrado = dadosValidos.some(
                     (dados) => dados && String(dados.musico?.id) === musicoId
                   );
                   return musicoEncontrado ? evento : null;
                 }
-    
+
                 return null;
               } catch (error) {
-                console.error(`Erro ao buscar dados para o evento ${evento.id}:`, error);
+                console.error(
+                  `Erro ao buscar dados para o evento ${evento.id}:`,
+                  error
+                );
                 return null;
               }
             })
@@ -73,19 +92,19 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
         }
       }
     } catch (error) {
-      console.error('Erro ao consultar eventos:', error);
+      console.error("Erro ao consultar eventos:", error);
       setActivities([]);
     }
     setIsLoading(false);
   };
-  
+
   const createEventoMusico = async (dados: EventoMusicoCreate) => {
-    const resultEventoMusico = await EventoMusico.create(dados)
+    const resultEventoMusico = await EventoMusico.create(dados);
 
     if (resultEventoMusico instanceof Error) {
       return resultEventoMusico.message;
     } else {
-      return resultEventoMusico
+      return resultEventoMusico;
     }
   };
 
@@ -94,18 +113,20 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
     if (result instanceof Error) {
       console.log(result.message);
     } else {
-      alert('Evento criado com sucesso!');
+      alert("Evento criado com sucesso!");
       if (formData.musicos && formData.musicos.length > 0) {
         const idEvento = result.id;
         for (const musico of formData.musicos) {
-
           const EventoMusico: EventoMusicoCreate = {
             conjuntoid: musico.instrumento,
-            eventoId: idEvento
+            eventoId: idEvento,
           };
           const eventoMusicoResult = await createEventoMusico(EventoMusico);
           if (eventoMusicoResult instanceof Error) {
-            console.log("Erro ao criar EventoMusico:", eventoMusicoResult.message);
+            console.log(
+              "Erro ao criar EventoMusico:",
+              eventoMusicoResult.message
+            );
           }
         }
         consultarEventos();
@@ -114,21 +135,19 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
     }
   };
 
-  const eventsCalendario = activities.map(activity => {
+  const eventsCalendario = activities.map((activity) => {
     const isMultiDay = new Date(activity.data_de) < new Date(activity.data_ate);
-  
     return {
       id: String(activity.id),
       title: activity.descricao,
       start: `${activity.data_de}T${activity.hora_de}`,
       end: `${activity.data_ate}T${activity.hora_ate}`,
       status: activity.status,
-      backgroundColor: isMultiDay ? "#489af1" : "#4caf50",
+      backgroundColor: isMultiDay ? laranja : laranja,
     };
   });
-  
 
-  const events = activities.map(activity => ({
+  const events = activities.map((activity) => ({
     id: activity.id,
     descricao: activity.descricao,
     data_de: `${activity.data_de}T${activity.hora_de}`,
@@ -141,28 +160,31 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
   }));
 
   const handleEventClick = async (info: any) => {
-    const clickedEvent = activities.find(event => String(event.id) === String(info.event.id));
-  
+    const clickedEvent = activities.find(
+      (event) => String(event.id) === String(info.event.id)
+    );
     if (clickedEvent) {
       const musicos = clickedEvent.musicos || [];
       const musicoID = clickedEvent.id;
       try {
         const buscarIConjunto = await EventoMusico.findEventoById(musicoID);
-  
         if (buscarIConjunto && Array.isArray(buscarIConjunto)) {
-          const extraEventoDataPromises = buscarIConjunto.map(async (eventoMusico: any) => {
-            const conjuntoId = eventoMusico.conjunto?.id;
-            if (conjuntoId) {
-              const data = await consultarDadosExtras(conjuntoId);
-              return data;
-            } else {
-              return null;
+          const extraEventoDataPromises = buscarIConjunto.map(
+            async (eventoMusico: any) => {
+              const conjuntoId = eventoMusico.conjunto?.id;
+              if (conjuntoId) {
+                const data = await consultarDadosExtras(conjuntoId);
+                return data;
+              } else {
+                return null;
+              }
             }
-          });
-  
+          );
           const extraEventosData = await Promise.all(extraEventoDataPromises);
-          const dadosValidos = extraEventosData.filter(data => !(data instanceof Error));
-  
+          const dadosValidos = extraEventosData.filter(
+            (data) => !(data instanceof Error)
+          );
+
           if (dadosValidos.length > 0) {
             const novosMusicos = dadosValidos.map((dados: any) => ({
               id: dados.id,
@@ -170,54 +192,47 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
                 id: dados.musico.id,
                 fullName: dados.musico.fullName,
                 email: dados.musico.email,
-                valorEvento: dados.musico.valorEvento
+                valorEvento: dados.musico.valorEvento,
               },
               instrumento: {
                 id: dados.instrumento.id,
-                name: dados.instrumento.name
-              }
+                name: dados.instrumento.name,
+              },
             }));
-  
+
             setSelectedEvent({
               ...clickedEvent,
-              musicos: [
-                ...musicos,
-                ...novosMusicos
-              ]
+              musicos: [...musicos, ...novosMusicos],
             });
           } else {
             setSelectedEvent({
               ...clickedEvent,
-              musicos: musicos
+              musicos: musicos,
             });
           }
-  
-        } else {
-          console.log('buscarIConjunto está vazio ou não é um array');
         }
       } catch (error) {
-        console.error('Erro ao buscar os dados do evento:', error);
+        console.error("Erro ao buscar os dados do evento:", error);
         setSelectedEvent({
           ...clickedEvent,
-          musicos: musicos
+          musicos: musicos,
         });
       }
-    } else {
-      console.log('Evento não encontrado');
     }
   };
-  
-  const consultarDadosExtras = async (idConjunto: number): Promise<MusicoInstrumentoCompleto | Error> => {
+
+  const consultarDadosExtras = async (
+    idConjunto: number
+  ): Promise<MusicoInstrumentoCompleto | Error> => {
     setIsLoading(true);
     try {
       const consulta = await MusicoInstrumento.findInstrumentosById(idConjunto);
-      setIsLoading(false);  
+      setIsLoading(false);
       if (consulta instanceof Error) {
         console.log("Erro ao obter dados extras:", consulta.message);
         return consulta;
       } else {
-        // setDadosExtras(consulta)
-        return consulta
+        return consulta;
       }
     } catch (error) {
       setIsLoading(false);
@@ -225,10 +240,10 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
       return new Error("Erro ao consultar dados extras");
     }
   };
-  
+
   const handleCloseModal = () => {
     setSelectedEvent(null);
-    consultarEventos()
+    consultarEventos();
   };
 
   useEffect(() => {
@@ -236,34 +251,65 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
   }, []);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundColor: "#e0e0e0",
+        height: "100vh",
+        padding: 0,
+        margin: 0,
+      }}
+    >
       <BarraInicialHome />
-      <Box sx={{ display: 'flex', backgroundColor: "#efefef" }}>
-        <Box sx={{ width: '60%', marginLeft: '5%', marginTop: '2%' }}>
-          <Typography variant="h6" sx={{ color: 'black' }} gutterBottom>
+      <Box
+        sx={{
+          display: "flex",
+          padding: 4,
+          backgroundColor: "#e0e0e0",
+          marginTop: 5,
+        }}
+      >
+        <Box
+          sx={{
+            width: "60%",
+            marginLeft: "5%",
+            marginTop: "2%",
+            border: "1px solid #e68929",
+            borderRadius: 2,
+            padding: 2,
+          }}
+        >
+          <Typography variant="h6" sx={{ color: "black" }} gutterBottom>
             Calendário para sua Banda
           </Typography>
           <FullCalendar
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
             events={eventsCalendario}
-            eventColor="#489af1"
+            eventColor={laranja}
             eventClick={handleEventClick}
             height="550px"
             eventContent={(eventInfo) => (
-              <Typography sx={{ color: 'black' }}>
+              <Typography sx={{ color: "white" }}>
                 {eventInfo.event.title}
               </Typography>
             )}
           />
-          <ViewEvento activity={selectedEvent}  onClose={handleCloseModal} />
+          <ViewEvento activity={selectedEvent} onClose={handleCloseModal} />
         </Box>
 
-        <Box sx={{ width: '30%', marginLeft: '2%', marginTop: '2%', display: 'flex', flexDirection: 'column' }}>
-        {userRole === 'admin' && (
+        <Box
+          sx={{
+            width: "30%",
+            marginLeft: "2%",
+            marginTop: "2%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {userRole === "admin" && (
             <Button
               variant="outlined"
-              sx={{ marginBottom: '1rem', border: 1, color: '#489af1' }}
+              sx={{ marginBottom: "1rem", border: 1, color: '#e68929' }}
               onClick={handleOpen}
             >
               Criar Novo Evento
@@ -275,8 +321,12 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
           </Box>
         </Box>
       </Box>
-      <NovoEvento open={open} onClose={handleClose} title="Novo Evento" onSubmit={handleSubmit} />
-
+      <NovoEvento
+        open={open}
+        onClose={handleClose}
+        title="Novo Evento"
+        onSubmit={handleSubmit}
+      />
     </Box>
   );
 };

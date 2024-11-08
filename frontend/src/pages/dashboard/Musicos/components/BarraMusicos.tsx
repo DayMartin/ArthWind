@@ -95,8 +95,11 @@ export const BarraMusicos: React.FC<BarraMusicosProps> = ({
                 sx={{
                     mb: 2,
                     minWidth: '150px',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    backgroundColor: '#ff8c00', 
+                    color: 'white'
                 }}
+
             >
                 Adicionar Músico
             </Button>

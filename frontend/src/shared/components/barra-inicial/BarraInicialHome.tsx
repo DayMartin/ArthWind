@@ -66,12 +66,13 @@ export const BarraInicialHome: React.VFC = () => {
       sx={{
         mx: 1,
         p: 2,
-        backgroundColor: "white",
+        backgroundColor: "#f5f5f5",
         borderRadius: "8px",
         boxShadow: 1,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        margin: 0,
       }}
     >
       <Box sx={{ display: "flex", gap: 2 }}>
@@ -85,7 +86,7 @@ export const BarraInicialHome: React.VFC = () => {
               <Typography
                 sx={{
                   cursor: "pointer",
-                  color: item.path === "/" ? "#0d47a1" : "grey.700",
+                  color: item.path === "/" ? "#ff8c00" : "grey.700",
                   fontWeight: "bold",
                   textDecoration: item.path === "/" ? "underline" : "none",
                   "&:hover": {
@@ -107,7 +108,7 @@ export const BarraInicialHome: React.VFC = () => {
             sx={{
               width: { xs: 40, sm: 50 },
               height: { xs: 40, sm: 50 },
-              backgroundColor: "#0d47a1", 
+              backgroundColor: "#ff8c00", 
               fontSize: "20px",
             }}
           >

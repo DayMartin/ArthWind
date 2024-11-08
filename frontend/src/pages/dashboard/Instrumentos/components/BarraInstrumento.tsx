@@ -68,7 +68,9 @@ export const BarraInstrumentos: React.FC<BarraInstrumentosProps> = ({
                 sx={{ 
                     mb: 2, 
                     minWidth: '150px',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    backgroundColor: '#ff8c00', 
+                    color: 'white'
                 }}
             >
                 Adicionar Instrumento                 

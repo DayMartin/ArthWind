@@ -1,15 +1,10 @@
-// update-eventos.dto.ts
-import {
-  IsString,
-  IsInt,
-  IsOptional,
-} from 'class-validator';
+import { IsInt, IsOptional } from 'class-validator';
 
 export class UpdateEventoMusicoDto {
   @IsOptional()
   @IsInt()
   id?: number;
-  
+
   @IsOptional()
   @IsInt()
   conjuntoid?: number;
@@ -17,6 +12,4 @@ export class UpdateEventoMusicoDto {
   @IsOptional()
   @IsInt()
   eventoId?: number;
-
-
 }

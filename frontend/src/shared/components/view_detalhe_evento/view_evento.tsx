@@ -1,10 +1,23 @@
 import { EventDetalhe } from "@/shared/interfaces/EventoInterface";
 import { MusicoInstrumentoCompleto } from "@/shared/interfaces/MusicoInstrumentoInterface";
+import { EventoMusico } from "@/shared/services/api/EventoMusicoService";
 import { EventoService } from "@/shared/services/api/EventoService";
-import { Box, Button, Modal, Typography, Divider, Tab, Tabs, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Modal,
+  Typography,
+  Divider,
+  Tab,
+  Tabs,
+  TextField,
+} from "@mui/material";
 import { useState } from "react";
 
-export const ViewEvento: React.FC<{ activity: EventDetalhe | null; onClose: () => void }> = ({ activity, onClose }) => {
+export const ViewEvento: React.FC<{
+  activity: EventDetalhe | null;
+  onClose: () => void;
+}> = ({ activity, onClose }) => {
   if (!activity) return null;
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -13,12 +26,23 @@ export const ViewEvento: React.FC<{ activity: EventDetalhe | null; onClose: () =
   };
 
   const excluirEvento = async (eventoId: number) => {
+    await excluirEventoMusico(eventoId);
     const resultMusicoInstrumento = await EventoService.deleteEvento(eventoId);
     if (resultMusicoInstrumento instanceof Error) {
       alert(`Erro: ${resultMusicoInstrumento.message}`);
     } else {
       alert("Evento excluído com sucesso!");
-      onClose(); 
+      onClose();
+    }
+  };
+
+  const excluirEventoMusico = async (eventoId: number) => {
+    const resultMusicoInstrumento = await EventoMusico.deleteMusicoEventoByEvento(eventoId);
+    if (resultMusicoInstrumento instanceof Error) {
+      alert(`Erro: ${resultMusicoInstrumento.message}`);
+    } else {
+      alert("EventoMusico excluído com sucesso!");
+      onClose();
     }
   };
 
@@ -31,25 +55,55 @@ export const ViewEvento: React.FC<{ activity: EventDetalhe | null; onClose: () =
     >
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           width: 600,
-          bgcolor: 'background.paper',
-          borderRadius: '8px',
+          bgcolor: "background.paper",
+          borderRadius: "8px",
           boxShadow: 24,
           p: 4,
-          outline: 'none',
+          outline: "none",
         }}
       >
-        <Typography id="modal-title" variant="h5" component="h2" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+        <Typography
+          id="modal-title"
+          variant="h5"
+          component="h2"
+          sx={{ fontWeight: "bold", textAlign: "center" }}
+        >
           {activity.descricao}
         </Typography>
 
-        <Tabs value={tabIndex} onChange={handleTabChange} sx={{ mt: 2 }} centered>
-          <Tab label="Dados Gerais" />
-          <Tab label="Músicos e Instrumentos" />
+        <Tabs
+          value={tabIndex}
+          onChange={handleTabChange}
+          centered
+          sx={{
+            mt: 2,
+            "& .MuiTabs-indicator": {
+              backgroundColor: "orange",
+            },
+          }}
+        >
+          <Tab
+            label="Dados Gerais"
+            sx={{
+              color: "orange",
+              "&.Mui-selected": {
+                color: "#e38e00",
+              },
+            }}
+          />
+          <Tab label="Músicos e Instrumentos" 
+          sx={{
+            color: "orange",
+            "&.Mui-selected": {
+              color: "#e38e00",
+            },
+          }}
+          />
         </Tabs>
 
         {tabIndex === 0 && (
@@ -100,9 +154,18 @@ export const ViewEvento: React.FC<{ activity: EventDetalhe | null; onClose: () =
         {tabIndex === 1 && (
           <Box sx={{ mt: 2 }}>
             {activity.musicos && activity.musicos.length > 0 ? (
-              <Box sx={{ maxHeight: 300, overflowY: 'auto' }}>
+              <Box sx={{ maxHeight: 300, overflowY: "auto" }}>
                 {activity.musicos.map((musico, index) => (
-                  <Box key={index} sx={{ mb: 2, padding: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#fafafa' }}>
+                  <Box
+                    key={index}
+                    sx={{
+                      mb: 2,
+                      padding: 2,
+                      border: "1px solid #e0e0e0",
+                      borderRadius: 2,
+                      backgroundColor: "#fafafa",
+                    }}
+                  >
                     <TextField
                       label="Nome do Músico"
                       value={musico.musico.fullName}
@@ -147,22 +210,31 @@ export const ViewEvento: React.FC<{ activity: EventDetalhe | null; onClose: () =
                 ))}
               </Box>
             ) : (
-              <Typography variant="body2" sx={{ mt: 2, color: 'text.secondary' }}>
+              <Typography
+                variant="body2"
+                sx={{ mt: 2, color: "text.secondary" }}
+              >
                 Nenhum músico associado.
               </Typography>
             )}
           </Box>
         )}
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-          <Button onClick={onClose} variant="contained" color="primary" sx={{ width: '100px' }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+          <Button
+            onClick={onClose}
+            variant="contained"
+            color="primary"
+            sx={{ mr: 2, backgroundColor: "#ff8c00", color: "white" }}
+
+          >
             Fechar
           </Button>
           <Button
             onClick={() => excluirEvento(activity.id)}
             variant="contained"
             color="error"
-            sx={{ width: '100px' }}
+            sx={{ width: "100px" }}
           >
             Excluir
           </Button>

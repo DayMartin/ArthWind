@@ -124,14 +124,14 @@ const MusicosListagem = () => {
 
   return (
     <Box>
-      <Box sx={{ padding: 4 }}>
+      <Box sx={{ padding: 4, backgroundColor: '#e0e0e0', height: '100vh' }}>
         <Typography variant="h4" gutterBottom>
           Lista de Músicos
         </Typography>
         <BarraMusicos listar={listar} onFilterIdChange={handleFilterIdChange}/>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead>
+            <TableHead sx={{backgroundColor: '#f5f5f5'}}>
               <TableRow>
                 <TableCell>Iniciais</TableCell>
                 <TableCell>Músico</TableCell>
@@ -151,7 +151,7 @@ const MusicosListagem = () => {
                       height: 40,
                       borderRadius: '50%',
                       backgroundColor: '#E9967A',
-                      color: 'white',
+                      color: '#f5f5f5',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -181,19 +181,29 @@ const MusicosListagem = () => {
                     <Button
                       variant="outlined"
                       onClick={() => handleVisualizarMusico(musico)}
-                      sx={{ mr: 1 }}
+                      sx={{
+                        mr: 1,
+                        backgroundColor: 'none', color: '#ffa500',
+                        borderColor: '#ffa500'
+                      }}
                     >
                     <VisibilityIcon />
                     </Button>
                     <Button
                       variant="outlined"
                       onClick={() => handleEditarMusico(musico)}
-                      sx={{ mr: 1 }}
+                      sx={{
+                        mr: 1,
+                        backgroundColor: 'none', color: '#ffa500',
+                        borderColor: '#ffa500'
+                      }}
                     >
                     <EditIcon />
                     </Button>
                     {musico.status === 'Ativo' ? (
-                          <Button onClick={() => handleStatusMusico(musico.id, 'Inativo')}>
+                          <Button onClick={() => handleStatusMusico(musico.id, 'Inativo')}
+                          sx={{ backgroundColor: '#ff4700', color: 'white'}}
+                          >
                               Desativar
                           </Button>
                       ) : (

@@ -1,8 +1,4 @@
-import {
-  IsNotEmpty,
-  IsInt,
-
-} from 'class-validator';
+import { IsNotEmpty, IsInt } from 'class-validator';
 
 export class CreateEventoMusicoDto {
   @IsNotEmpty()
@@ -12,5 +8,4 @@ export class CreateEventoMusicoDto {
   @IsNotEmpty()
   @IsInt()
   eventoId: number;
-  
 }

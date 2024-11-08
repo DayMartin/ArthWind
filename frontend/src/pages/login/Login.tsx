@@ -100,6 +100,13 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
                   value={fullName}
                   disabled={isLoading}
                   onChange={(e) => setFullName(e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'orange',
+                      },
+                    },
+                  }}
                 />
                 <TextField
                   fullWidth
@@ -110,6 +117,13 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
                   error={!!emailError}
                   helperText={emailError}
                   onChange={(e) => setEmail(e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'orange',
+                      },
+                    },
+                  }}
                 />
                 <TextField
                   fullWidth
@@ -120,6 +134,13 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
                   error={!!senhaError}
                   helperText={senhaError}
                   onChange={(e) => setSenha(e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'orange',
+                      },
+                    },
+                  }}
                 />
               </>
             ) : (
@@ -133,6 +154,13 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
                   error={!!emailError}
                   helperText={emailError}
                   onChange={(e) => setEmail(e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'orange',
+                      },
+                    },
+                  }}
                 />
                 <TextField
                   fullWidth
@@ -143,6 +171,13 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
                   error={!!senhaError}
                   helperText={senhaError}
                   onChange={(e) => setSenha(e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'orange',
+                      },
+                    },
+                  }}
                 />
               </>
             )}
@@ -156,6 +191,12 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
                 disabled={isLoading}
                 onClick={handleSubmit}
                 endIcon={isLoading ? <CircularProgress variant="indeterminate" color="inherit" size={20} /> : undefined}
+                sx={{
+                  backgroundColor: 'orange',
+                  '&:hover': {
+                    backgroundColor: '#e68929',
+                  },
+                }}
               >
                 Criar Músico
               </Button>
@@ -165,6 +206,12 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
                 disabled={isLoading}
                 onClick={handleLoginSubmit}
                 endIcon={isLoading ? <CircularProgress variant="indeterminate" color="inherit" size={20} /> : undefined}
+                sx={{
+                  backgroundColor: 'orange',
+                  '&:hover': {
+                    backgroundColor: '#e68929',
+                  },
+                }}
               >
                 Entrar
               </Button>
@@ -173,7 +220,16 @@ const Login: React.FC<ILoginProps> = ({ children }) => {
         </CardActions>
         <CardActions>
           <Box width="100%" display="flex" justifyContent="center">
-            <Button onClick={toggleForm}>
+            <Button onClick={toggleForm}
+              sx={{
+                backgroundColor: 'orange',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#e68929',
+                  color: 'white'
+                },
+              }}
+            >
               {isCreating ? 'Já tem uma conta? Faça login' : 'Criar uma nova conta'}
             </Button>
           </Box>

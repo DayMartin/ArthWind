@@ -1,8 +1,6 @@
 import { Evento } from 'src/eventos/evento.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { MusicoInstrumento } from 'src/musico_instrumento/musico_instrumento.entity';
-import { Musico } from 'src/musicos/musico.entity';
-import { Instrumento } from 'src/instrumentos/instrumento.entity';
 
 @Entity()
 export class EventoMusico {

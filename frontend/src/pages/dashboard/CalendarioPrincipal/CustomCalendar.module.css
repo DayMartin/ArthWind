@@ -1,7 +1,7 @@
 .react-calendar {
   border: none;
   border-radius: 8px;
-  box-shadow: 0px 4px 8px rgb(80, 67, 255);
+  box-shadow: 0px 4px 8px #e68929;
   font-family: Arial, sans-serif;
 }
 
@@ -11,13 +11,13 @@
 }
 
 .react-calendar__tile--active {
-  background-color: #4a56ff;
-  color: #12124e;
+  background-color: #e68929;
+  color: #e68929;
 }
 
 
 .fc-day-today {
-  background-color: #ff5722 !important;
+  background-color: #e68929 !important;
   color: white !important; 
   font-weight: bold !important;
 }

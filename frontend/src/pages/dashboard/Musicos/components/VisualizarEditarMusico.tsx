@@ -250,7 +250,9 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                         ))}
                                     </Select>
                                 </FormControl>
-                                <Button onClick={handleAddInstrumento} color="primary" variant="contained">Adicionar</Button>
+                                <Button onClick={handleAddInstrumento}
+                                sx={{ mt: 2, backgroundColor: '#ff8c00', color: 'white'}}
+                                variant="contained">Adicionar</Button>
                             </Grid>
                         )}
                         <Grid item xs={12}>
@@ -275,7 +277,7 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                                                     {isEditing && (
                                                         <Button
                                                             onClick={() => handleRemoveInstrumento(instrumento.id)}
-                                                            color="secondary"
+                                                            color="error"
                                                             variant="outlined"
                                                         >
                                                             Remover
@@ -294,8 +296,12 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
                 )}
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="primary">Fechar</Button>
-                {isEditing && <Button onClick={handleSave} color="primary">Salvar</Button>}
+                <Button onClick={onClose} 
+                 sx={{ mt: 2, backgroundColor: '#ff8c00', color: 'white'}}
+                >Fechar</Button>
+                {isEditing && <Button onClick={handleSave} 
+                sx={{ mt: 2, backgroundColor: '#ff8c00', color: 'white'}}
+                >Salvar</Button>}
             </DialogActions>
         </Dialog>
     );

@@ -36,12 +36,10 @@ const findEventoById = async (musicoID: number): Promise<EventoMusicoDetalhe[]> 
     if (data) {
       return data;
     } else {
-      // Caso os dados não sejam válidos, lança um erro com uma mensagem clara
       throw new Error('Erro ao listar os registros. Dados inválidos.');
     }
   } catch (error) {
     console.error(error);
-    // Lança o erro com a mensagem caso aconteça uma falha
     throw new Error((error as Error).message || 'Erro ao listar os registros.');
   }
 };
@@ -55,10 +53,20 @@ const deleteMusicoEvento = async (id: number): Promise<void | Error> => {
   }
 };
 
+const deleteMusicoEventoByEvento = async (id: number): Promise<void | Error> => {
+  try {
+    await Api.delete(`evento_musico/evento/${id}`);
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao excluir o registro.');
+  }
+};
+
 
 export const EventoMusico = {
   create,
   findEventoByMusico,
   deleteMusicoEvento,
-  findEventoById
+  findEventoById,
+  deleteMusicoEventoByEvento
 }

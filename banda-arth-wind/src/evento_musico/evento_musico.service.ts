@@ -80,6 +80,30 @@ export class EventoMusicoService {
     }
   }
 
+  async deleteEventoMusicoByEventoId(eventoId: number): Promise<void> {
+    const eventoMusicos = await this.eventoMusicoRepository.find({
+      where: { evento: { id: eventoId } },
+    });
+
+    if (eventoMusicos.length === 0) {
+      throw new NotFoundException(
+        `Nenhum MusicoEvento encontrado para o Evento com ID ${eventoId}`,
+      );
+    }
+    const result = await this.eventoMusicoRepository.delete({
+      evento: { id: eventoId },
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `Não foi possível excluir MusicoEvento com Evento ID ${eventoId}`,
+      );
+    }
+    console.log(
+      `Excluídos ${result.affected} registros de EventoMusico para o Evento ID ${eventoId}`,
+    );
+  }
+
   async getEventoByMusicoId(musicoId: number): Promise<EventoMusico[]> {
     return this.eventoMusicoRepository.find({
       where: { conjunto: { id: musicoId } },

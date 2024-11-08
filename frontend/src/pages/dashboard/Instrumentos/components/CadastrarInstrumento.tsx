@@ -70,7 +70,7 @@ const CadastrarInstrumento: React.FC<CadastrarInstrumentoProps> = ({ open, onClo
                         onClick={handleSubmit}
                         variant="contained"
                         color="primary"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 2, backgroundColor: "#ff8c00", color: "white" }}
                     >
                         Salvar
                     </Button>
