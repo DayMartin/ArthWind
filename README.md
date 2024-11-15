@@ -33,9 +33,6 @@ Caso você seja direcionado para a página inicial sem fazer login, por favor, a
 
 É necessário criar um novo usuário para realizar o login pela primeira vez. O primeiro usuário é definido como **admin**:  
 
-##### Erro
-
-Note que para editar um músico é necessário estar logado em sua conta, pois a edição na listagem padrão de músicos não está funcionando por hora
 
 ## Definições do Projeto
 
