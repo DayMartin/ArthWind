@@ -300,7 +300,7 @@ const PerfilUsuario: React.FC<BarraPerfilUsuarioProps> = ({
                 </FormControl>
                 <Button
                   onClick={handleAddInstrumento}
-                  sx={{ backgroundColor: "#ff8c00", color: "white" }}
+                  sx={{ backgroundColor: "#ff7f50", color: "white" }}
                   variant="contained"
                 >
                   Adicionar
@@ -354,9 +354,9 @@ const PerfilUsuario: React.FC<BarraPerfilUsuarioProps> = ({
           onClick={onClose}
           sx={{
             backgroundColor: "none",
-            color: "#ff8c00",
+            color: "#ff7f50",
             border: 1,
-            borderColor: "#ff8c00",
+            borderColor: "#ff7f50",
           }}
         >
           Fechar
@@ -364,7 +364,7 @@ const PerfilUsuario: React.FC<BarraPerfilUsuarioProps> = ({
         {isEditing && (
           <Button
             onClick={handleSave}
-            sx={{ backgroundColor: "#ff8c00", color: "white" }}
+            sx={{ backgroundColor: "#ff7f50", color: "white" }}
           >
             Salvar
           </Button>

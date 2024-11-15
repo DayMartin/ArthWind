@@ -127,7 +127,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({
           textAlign: "center",
         }}
       >
-        <Typography variant="h6" component="h2" sx={{ color: "orange" }}>
+        <Typography variant="h6" component="h2" sx={{ color: "#ff7f50" }}>
           {title}
         </Typography>
         <Tabs
@@ -136,7 +136,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({
         sx={{
             mt: 2,
             '& .MuiTabs-indicator': {
-            backgroundColor: 'orange',
+            backgroundColor: '#ff7f50',
             },
         }}
         >
@@ -145,7 +145,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({
             sx={{
             color: 'orange',
             '&.Mui-selected': {
-                color: '#e38e00',
+                color: '#ff7f50',
             },
             }} 
         />
@@ -154,7 +154,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({
             sx={{
             color: 'orange', 
             '&.Mui-selected': {
-                color: '#e38e00', 
+                color: '#ff7f50', 
             },
             }} 
         />
@@ -291,7 +291,7 @@ const CadastrarMusico: React.FC<CadastrarMusicoProps> = ({
             onClick={handleSubmit}
             variant="contained"
             color="primary"
-            sx={{ mt: 2, backgroundColor: "#ff8c00", color: "white" }}
+            sx={{ mt: 2, backgroundColor: "#ff7f50", color: "white" }}
           >
             Salvar
           </Button>

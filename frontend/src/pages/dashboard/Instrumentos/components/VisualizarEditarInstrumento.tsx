@@ -101,14 +101,14 @@ const InstrumentoDetalhesDialog: React.FC<InstrumentoDetalhesDialogProps> = ({
         {isEditing && (
           <Button
             onClick={handleSave}
-            sx={{ mt: 2, backgroundColor: "#ff8c00", color: "white" }}
+            sx={{ mt: 2, backgroundColor: "#ff7f50", color: "white" }}
           >
             Salvar
           </Button>
         )}
         <Button
           onClick={onClose}
-          sx={{ mt: 2, backgroundColor: "#ff8c00", color: "white" }}
+          sx={{ mt: 2, backgroundColor: "#ff7f50", color: "white" }}
         >
           Fechar
         </Button>

@@ -20,7 +20,7 @@ import {
 } from "@/shared/interfaces/MusicoInstrumentoInterface";
 import { MusicoInstrumento } from "@/shared/services/api/MusicoInstrumento";
 
-const laranja = "#ff8c00"; 
+const laranja = "#ff7f50"; 
 
 const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
   const [selectedEvent, setSelectedEvent] = useState<EventDetalhe | null>(null);
@@ -273,7 +273,7 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
             width: "60%",
             marginLeft: "5%",
             marginTop: "2%",
-            border: "1px solid #e68929",
+            border: "1px solid #ff7f50",
             borderRadius: 2,
             padding: 2,
           }}
@@ -309,7 +309,7 @@ const CalenarioPrincipal: React.FC<CustomCalendarProps> = () => {
           {userRole === "admin" && (
             <Button
               variant="outlined"
-              sx={{ marginBottom: "1rem", border: 1, color: '#e68929' }}
+              sx={{ marginBottom: "1rem", border: 1, color: '#ff7f50' }}
               onClick={handleOpen}
             >
               Criar Novo Evento

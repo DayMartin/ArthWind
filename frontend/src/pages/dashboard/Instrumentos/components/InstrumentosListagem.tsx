@@ -167,8 +167,8 @@ const InstrumentosListagem = () => {
                       onClick={() => handleVisualizarInstrumento(instrumento)}
                       sx={{
                         mr: 1,
-                        backgroundColor: 'none', color: '#ffa500',
-                        borderColor: '#ffa500'
+                        backgroundColor: 'none', color: '#ff7f50',
+                        borderColor: '#ff7f50'
                       }}
                     >
                     <VisibilityIcon />
@@ -178,14 +178,14 @@ const InstrumentosListagem = () => {
                       onClick={() => handleEditarInstrumento(instrumento)}
                       sx={{
                         mr: 1,
-                        backgroundColor: 'none', color: '#ffa500',
-                        borderColor: '#ffa500'
+                        backgroundColor: 'none', color: '#ff7f50',
+                        borderColor: '#ff7f50'
                       }}
                     >
                     <EditIcon />
                     </Button>
-                    <Button onClick={() => handleExcluirInstrumento(instrumento.id)}>
-                      <DeleteIcon color="error" />
+                    <Button onClick={() => handleExcluirInstrumento(instrumento.id)} sx={{border: '1px solid #ff7f50'}}>
+                      <DeleteIcon color="error"  />
                     </Button>
                   </TableCell>
                 </TableRow>

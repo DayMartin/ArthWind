@@ -83,24 +83,24 @@ export const ViewEvento: React.FC<{
           sx={{
             mt: 2,
             "& .MuiTabs-indicator": {
-              backgroundColor: "orange",
+              backgroundColor: "#ff7f50",
             },
           }}
         >
           <Tab
             label="Dados Gerais"
             sx={{
-              color: "orange",
+              color: "#ff7f50",
               "&.Mui-selected": {
-                color: "#e38e00",
+                color: "#ff7f50",
               },
             }}
           />
           <Tab label="Músicos e Instrumentos" 
           sx={{
-            color: "orange",
+            color: "#ff7f50",
             "&.Mui-selected": {
-              color: "#e38e00",
+              color: "#ff7f50",
             },
           }}
           />
@@ -225,7 +225,7 @@ export const ViewEvento: React.FC<{
             onClick={onClose}
             variant="contained"
             color="primary"
-            sx={{ mr: 2, backgroundColor: "#ff8c00", color: "white" }}
+            sx={{ mr: 2, backgroundColor: "#ff7f50", color: "white" }}
 
           >
             Fechar
@@ -233,8 +233,7 @@ export const ViewEvento: React.FC<{
           <Button
             onClick={() => excluirEvento(activity.id)}
             variant="contained"
-            color="error"
-            sx={{ width: "100px" }}
+            sx={{ width: "100px", backgroundColor: '#c90808' }}
           >
             Excluir
           </Button>

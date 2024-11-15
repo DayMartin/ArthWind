@@ -165,7 +165,7 @@ const MusicosListagem = () => {
                         width: 40,
                         height: 40,
                         borderRadius: "50%",
-                        backgroundColor: "#E9967A",
+                        backgroundColor: "#ff7f50",
                         color: "#f5f5f5",
                         display: "flex",
                         alignItems: "center",
@@ -199,8 +199,8 @@ const MusicosListagem = () => {
                       sx={{
                         mr: 1,
                         backgroundColor: "none",
-                        color: "#ffa500",
-                        borderColor: "#ffa500",
+                        color: "#ff7f50",
+                        borderColor: "#ff7f50",
                       }}
                     >
                       <VisibilityIcon />
@@ -211,8 +211,8 @@ const MusicosListagem = () => {
                       sx={{
                         mr: 1,
                         backgroundColor: "none",
-                        color: "#ffa500",
-                        borderColor: "#ffa500",
+                        color: "#ff7f50",
+                        borderColor: "#ff7f50",
                       }}
                     >
                       <EditIcon />
@@ -220,7 +220,7 @@ const MusicosListagem = () => {
                     {musico.status === "Ativo" ? (
                       <Button
                         onClick={() => handleStatusMusico(musico.id, "Inativo")}
-                        sx={{ backgroundColor: "#ff4700", color: "white" }}
+                        sx={{ backgroundColor: "#c90808", color: "white" }}
                       >
                         Desativar
                       </Button>

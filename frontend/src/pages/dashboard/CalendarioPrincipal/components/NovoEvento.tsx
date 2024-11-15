@@ -196,7 +196,7 @@ const NovoEvento: React.FC<NovoEventoProps> = ({
             sx={{
               color: "orange",
               "&.Mui-selected": {
-                color: "#e38e00",
+                color: "#ff7f50",
               },
             }}
           />
@@ -205,7 +205,7 @@ const NovoEvento: React.FC<NovoEventoProps> = ({
             sx={{
               color: "orange",
               "&.Mui-selected": {
-                color: "#e38e00",
+                color: "#ff7f50",
               },
             }}
           />
@@ -331,7 +331,7 @@ const NovoEvento: React.FC<NovoEventoProps> = ({
                 <Button
                   onClick={handleAddMusico}
                   variant="outlined"
-                  sx={{ mt: 2, backgroundColor: "#ff8c00", color: "white" }}
+                  sx={{ mt: 2, backgroundColor: "#ff7f50", color: "white", border: "1px #ff7f50" }}
                 >
                   Adicionar Músico
                 </Button>
@@ -375,7 +375,7 @@ const NovoEvento: React.FC<NovoEventoProps> = ({
             <Button
               variant="contained"
               onClick={handleSubmit}
-              sx={{ mr: 2, backgroundColor: "#ff8c00", color: "white" }}
+              sx={{ mr: 2, backgroundColor: "#ff7f50", color: "white" }}
             >
               Salvar
             </Button>
@@ -385,8 +385,8 @@ const NovoEvento: React.FC<NovoEventoProps> = ({
               onClick={onClose}
               sx={{
                 backgroundColor: "none",
-                color: "#ff8c00",
-                borderBlockColor: "#ff8c00",
+                color: "#ff7f50",
+                border: "1px solid #ff7f50",
               }}
             >
               Cancelar

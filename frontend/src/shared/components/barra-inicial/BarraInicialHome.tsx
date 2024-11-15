@@ -86,7 +86,7 @@ export const BarraInicialHome: React.VFC = () => {
               <Typography
                 sx={{
                   cursor: "pointer",
-                  color: item.path === "/" ? "#ff8c00" : "grey.700",
+                  color: item.path === "/" ? "#ff7f50" : "grey.700",
                   fontWeight: "bold",
                   textDecoration: item.path === "/" ? "underline" : "none",
                   "&:hover": {
@@ -108,7 +108,7 @@ export const BarraInicialHome: React.VFC = () => {
             sx={{
               width: { xs: 40, sm: 50 },
               height: { xs: 40, sm: 50 },
-              backgroundColor: "#ff8c00", 
+              backgroundColor: "#ff7f50", 
               fontSize: "20px",
             }}
           >

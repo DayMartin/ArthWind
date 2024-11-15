@@ -96,7 +96,7 @@ export const BarraMusicos: React.FC<BarraMusicosProps> = ({
                     mb: 2,
                     minWidth: '150px',
                     whiteSpace: 'nowrap',
-                    backgroundColor: '#ff8c00', 
+                    backgroundColor: '#ff7f50', 
                     color: 'white'
                 }}
 

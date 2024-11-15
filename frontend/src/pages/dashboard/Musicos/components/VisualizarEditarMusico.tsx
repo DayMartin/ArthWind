@@ -297,10 +297,10 @@ const MusicoDetalhesDialog: React.FC<MusicoDetalhesDialogProps> = ({ open, onClo
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} 
-                 sx={{ mt: 2, backgroundColor: '#ff8c00', color: 'white'}}
+                 sx={{ mt: 2, backgroundColor: '#ff7f50', color: 'white'}}
                 >Fechar</Button>
                 {isEditing && <Button onClick={handleSave} 
-                sx={{ mt: 2, backgroundColor: '#ff8c00', color: 'white'}}
+                sx={{ mt: 2, backgroundColor: '#ff7f50', color: 'white'}}
                 >Salvar</Button>}
             </DialogActions>
         </Dialog>
