@@ -11,8 +11,8 @@ Este projeto é dividido em três partes principais: **Backend**, **Frontend** e
 ## Instalação
 
 Clone este repositório para a sua máquina local:  
-`git clone https://github.com/seu-usuario/seu-repositorio.git`  
-`cd seu-repositorio`
+`git clone https://github.com/DayMartin/GerenciadorEventos.git`  
+`cd GerenciadorEventos`
 
 Para instalar as dependências do projeto, execute o comando abaixo:  
 `bash install.sh`
